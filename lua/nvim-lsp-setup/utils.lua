@@ -56,14 +56,22 @@ end
 
 function M.format_on_save(client)
     if client.resolved_capabilities.document_formatting then
-        local lsp_format_augroup = 'lsp_format_augroup'
-        vim.api.nvim_create_augroup(lsp_format_augroup, { clear = true })
-        vim.api.nvim_create_autocmd('BufWritePre', {
-            group = lsp_format_augroup,
-            callback = function()
-                vim.lsp.buf.formatting_sync(nil, 1000)
-            end,
-        })
+        vim.cmd([[
+          augroup Format
+            au! * <buffer>
+            au BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000)
+          augroup END
+        ]])
+
+        -- nvim 0.7+
+        -- local lsp_format_augroup = 'lsp_format_augroup'
+        -- vim.api.nvim_create_augroup(lsp_format_augroup, { clear = true })
+        -- vim.api.nvim_create_autocmd('BufWritePre', {
+        --     group = lsp_format_augroup,
+        --     callback = function()
+        --         vim.lsp.buf.formatting_sync(nil, 1000)
+        --     end,
+        -- })
     end
 end
 
