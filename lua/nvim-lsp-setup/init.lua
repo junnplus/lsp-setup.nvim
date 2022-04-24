@@ -3,7 +3,10 @@ local utils = require('nvim-lsp-setup.utils')
 local M = {}
 
 function M.setup(opts)
-    opts = opts or {}
+    opts = vim.tbl_deep_extend('keep', opts, {
+        default_mappings = true,
+        mappings = {},
+    })
     local servers = opts.servers
     local mappings = opts.mappings
 
@@ -19,7 +22,6 @@ function M.setup(opts)
                 if opts.on_attach then
                     opts.on_attach(client, bufnr)
                 else
-                    utils.default_mappings(bufnr, mappings)
                     utils.format_on_save(client)
                 end
             end,
@@ -30,6 +32,16 @@ function M.setup(opts)
                 debounce_text_changes = 150,
             },
         })
+        local on_attach = config.on_attach
+        config.on_attach = function(client, bufnr)
+            if opts.default_mappings then
+                utils.default_mappings(bufnr, mappings)
+            else
+                utils.mappings(bufnr, mappings)
+            end
+
+            on_attach(client, bufnr)
+        end
         server:setup(config)
     end)
 end

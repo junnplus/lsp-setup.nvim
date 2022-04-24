@@ -27,13 +27,18 @@ function M.disable_formatting(client)
     client.resolved_capabilities.document_range_formatting = false
 end
 
-function M.default_mappings(bufnr, mappings)
+function M.mappings(bufnr, mappings)
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)
     end
     local opts = { noremap = true, silent = true }
+    for key, cmd in pairs(mappings or {}) do
+        buf_set_keymap('n', key, '<cmd>' .. cmd .. '<CR>', opts)
+    end
+end
 
-    local default_mappings = {
+function M.default_mappings(bufnr, mappings)
+    local defaults = {
         gD = 'lua vim.lsp.buf.declaration()',
         gd = 'lua vim.lsp.buf.definition()',
         gt = 'lua vim.lsp.buf.type_definition()',
@@ -48,10 +53,8 @@ function M.default_mappings(bufnr, mappings)
         ['[d'] = 'lua vim.lsp.diagnostic.goto_prev()',
         [']d'] = 'lua vim.lsp.diagnostic.goto_next()',
     }
-    mappings = vim.tbl_deep_extend('keep', mappings or {}, default_mappings)
-    for key, cmd in pairs(mappings) do
-        buf_set_keymap('n', key, '<cmd>' .. cmd .. '<CR>', opts)
-    end
+    mappings = vim.tbl_deep_extend('keep', mappings or {}, defaults)
+    M.mappings(bufnr, mappings)
 end
 
 function M.format_on_save(client)
