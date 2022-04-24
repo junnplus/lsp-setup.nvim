@@ -41,6 +41,7 @@ require('nvim-lsp-setup').setup({
     }
     servers = {
         -- Automatically install lsp server
+        -- LSP server configuration please see: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
         pylsp = {},
         rust_analyzer = {
             settings = {
