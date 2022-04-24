@@ -72,6 +72,15 @@ require('nvim-lsp-setup').setup({
                 },
             },
         },
+        -- Setup sumneko_lua with lua-dev
+        -- sumneko_lua = require('lua-dev').setup({
+        --     lspconfig = {
+        --         on_attach = function(client, _)
+        --              -- Disable formatting
+        --              require('nvim-lsp-setup.utils').disable_formatting(client)
+        --         end,
+        --     },
+        -- }),
     },
 })
 ```
