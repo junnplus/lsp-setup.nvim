@@ -13,7 +13,11 @@ end
 
 function M.capabilities()
     local capabilities = vim.lsp.protocol.make_client_capabilities()
-    return require('cmp_nvim_lsp').update_capabilities(capabilities)
+    local ok, cmp = pcall(require, 'cmp_nvim_lsp')
+    if ok then
+        return cmp.update_capabilities(capabilities)
+    end
+    return capabilities
 end
 
 function M.disable_formatting(client)
@@ -23,31 +27,31 @@ function M.disable_formatting(client)
     client.resolved_capabilities.document_range_formatting = false
 end
 
-function M.mappings(bufnr)
+function M.mappings(bufnr, mappings)
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)
     end
     local opts = { noremap = true, silent = true }
 
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
-    -- buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-    -- buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-    buf_set_keymap('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-    -- buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-    -- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-
-    buf_set_keymap('n', 'gd', '<cmd>Telescope lsp_definitions<CR>', opts)
-    buf_set_keymap('n', 'gi', '<cmd>Telescope lsp_implementations<CR>', opts)
-    buf_set_keymap('n', 'gr', '<cmd>Telescope lsp_references<CR>', opts)
-
-    buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-    buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-    buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-    buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-    buf_set_keymap('n', '<space>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-    buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-    buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-    buf_set_keymap('n', '<space>F', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+    local default_mappings = {
+        gD = 'lua vim.lsp.buf.declaration()',
+        gd = 'lua vim.lsp.buf.definition()',
+        gt = 'lua vim.lsp.buf.type_definition()',
+        gi = 'lua vim.lsp.buf.implementation()',
+        gr = 'lua vim.lsp.buf.references()',
+        K = 'lua vim.lsp.buf.hover()',
+        ['<C-k>'] = 'lua vim.lsp.buf.signature_help()',
+        ['<space>rn'] = 'lua vim.lsp.buf.rename()',
+        ['<space>ca'] = 'lua vim.lsp.buf.code_action()',
+        ['<space>f'] = 'lua vim.lsp.buf.formatting()',
+        ['<space>e'] = 'lua vim.lsp.diagnostic.show_line_diagnostics()',
+        ['[d'] = 'lua vim.lsp.diagnostic.goto_prev()',
+        [']d'] = 'lua vim.lsp.diagnostic.goto_next()',
+    }
+    mappings = vim.tbl_deep_extend('keep', mappings or {}, default_mappings)
+    for key, cmd in pairs(mappings) do
+        buf_set_keymap('n', key, '<cmd>' .. cmd .. '<CR>', opts)
+    end
 end
 
 function M.format_on_save(client)
