@@ -4,7 +4,7 @@
 
 - Neovim >= 0.6.0
 - nvim-lspoconfig
-- nvim-lsp-instanller
+- nvim-lsp-installer
 
 ### packer
 
@@ -38,7 +38,12 @@ require('nvim-lsp-setup').setup({
     -- ['<space>e'] = 'lua vim.lsp.diagnostic.show_line_diagnostics()',
     -- ['[d'] = 'lua vim.lsp.diagnostic.goto_prev()',
     -- [']d'] = 'lua vim.lsp.diagnostic.goto_next()',
-    mappings = {},
+    mappings = {
+    -- Example mappings for telescope pickers
+    -- gd = 'lua require"telescope.builtin".lsp_definitions()',
+    -- gi = 'lua require"telescope.builtin".lsp_implementations()',
+    -- gr = 'lua require"telescope.builtin".lsp_references()',
+    },
     -- Global on_attach
     -- on_attach = function(client, bufnr) {
     --     utils.format_on_save(client)
