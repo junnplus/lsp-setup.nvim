@@ -12,11 +12,16 @@ function M.setup(opts)
             return {}
         end,
     })
+
     utils.lsp_installer(servers).on_server_ready(function(server)
         local config = vim.tbl_deep_extend('keep', servers[server.name], {
             on_attach = function(client, bufnr)
-                utils.mappings(bufnr, mappings)
-                utils.format_on_save(client)
+                if opts.on_attach then
+                    opts.on_attach(client, bufnr)
+                else
+                    utils.default_mappings(bufnr, mappings)
+                    utils.format_on_save(client)
+                end
             end,
             capabilities = utils.capabilities(),
             settings = {},

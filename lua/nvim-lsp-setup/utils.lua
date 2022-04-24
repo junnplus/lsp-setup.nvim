@@ -27,7 +27,7 @@ function M.disable_formatting(client)
     client.resolved_capabilities.document_range_formatting = false
 end
 
-function M.mappings(bufnr, mappings)
+function M.default_mappings(bufnr, mappings)
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)
     end

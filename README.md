@@ -39,6 +39,11 @@ require('nvim-lsp-setup').setup({
         -- ['[d'] = 'lua vim.lsp.diagnostic.goto_prev()',
         -- [']d'] = 'lua vim.lsp.diagnostic.goto_next()',
     }
+    -- Global on_attach
+    -- on_attach = function(client, bufnr) {
+    --     utils.default_mappings(bufnr, mappings)
+    --     utils.format_on_save(client)
+    -- },
     servers = {
         -- Automatically install lsp server
         -- LSP server configuration please see: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
