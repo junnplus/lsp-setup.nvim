@@ -6,6 +6,7 @@ function M.setup(opts)
     opts = vim.tbl_deep_extend('keep', opts, {
         default_mappings = true,
         mappings = {},
+        servers = {},
     })
     local servers = opts.servers
     local mappings = opts.mappings
