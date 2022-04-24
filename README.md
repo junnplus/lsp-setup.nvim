@@ -18,6 +18,14 @@ use {
 }
 ```
 
+### plug
+
+```vim
+Plug 'junnplus/nvim-lsp-setup'
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/nvim-lsp-installer'
+```
+
 
 ## Setup
 
