@@ -1,12 +1,14 @@
 # nvim-lsp-setup
 
+A simple wrapper for [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) and [nvim-lsp-installer](https://github.com/williamboman/nvim-lsp-installer) to easily setup LSP servers.
+
 ## Installation
 
 - Neovim >= 0.6.0
-- nvim-lspoconfig
+- nvim-lspconfig
 - nvim-lsp-installer
 
-### packer
+### [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
 ```lua
 use {
@@ -18,7 +20,7 @@ use {
 }
 ```
 
-### plug
+### [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```vim
 Plug 'junnplus/nvim-lsp-setup'
@@ -27,7 +29,7 @@ Plug 'williamboman/nvim-lsp-installer'
 ```
 
 
-## Setup
+## Usage
 
 ```lua
 require('nvim-lsp-setup').setup({
@@ -57,7 +59,7 @@ require('nvim-lsp-setup').setup({
     --     utils.format_on_save(client)
     -- },
     servers = {
-        -- Automatically install lsp server
+        -- Install LSP servers automatically
         -- LSP server configuration please see: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
         pylsp = {},
         rust_analyzer = {
@@ -84,3 +86,13 @@ require('nvim-lsp-setup').setup({
     },
 })
 ```
+
+## Integrations
+
+### [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp)
+
+If installed, will auto advertise capabilities to LSP servers.
+
+## Contributing
+
+Bug reports and feature requests are welcome! PRs are doubly welcome!
