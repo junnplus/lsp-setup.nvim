@@ -93,6 +93,31 @@ require('nvim-lsp-setup').setup({
 
 If installed, will auto advertise capabilities to LSP servers.
 
+### [rust-tools.nvim](https://github.com/simrat39/rust-tools.nvim)
+
+Using `require('nvim-lsp-setup.rust-tools').setup({})` instead of `require('rust-tools').setup({})`.
+
+```lua
+require('nvim-lsp-setup').setup({
+    servers = {
+        rust_analyzer = require('nvim-lsp-setup.rust-tools').setup({
+            server = {
+                settings = {
+                    ['rust-analyzer'] = {
+                        cargo = {
+                            loadOutDirsFromCheck = true,
+                        },
+                        procMacro = {
+                            enable = true,
+                        },
+                    },
+                },
+            },
+        })
+    }
+})
+```
+
 ## Contributing
 
 Bug reports and feature requests are welcome! PRs are doubly welcome!
