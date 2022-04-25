@@ -7,6 +7,7 @@ function M.setup(opts)
         default_mappings = true,
         mappings = {},
         servers = {},
+        capabilities = vim.lsp.protocol.make_client_capabilities(),
     })
     local servers = opts.servers
     local mappings = opts.mappings
@@ -26,13 +27,20 @@ function M.setup(opts)
                     utils.format_on_save(client)
                 end
             end,
-            capabilities = utils.capabilities(),
+            capabilities = opts.capabilities,
             settings = {},
             flags = {
                 -- This will be the default in neovim 0.7+
                 debounce_text_changes = 150,
             },
         })
+
+        local capabilities = config.capabilities
+        local ok, cmp = pcall(require, 'cmp_nvim_lsp')
+        if ok then
+            config.capabilities = cmp.update_capabilities(capabilities)
+        end
+
         local on_attach = config.on_attach
         config.on_attach = function(client, bufnr)
             if opts.default_mappings then

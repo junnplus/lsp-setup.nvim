@@ -11,20 +11,6 @@ function M.lsp_installer(servers)
     return lsp_installer
 end
 
-function M.capabilities()
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
-    local ok, cmp = pcall(require, 'cmp_nvim_lsp')
-    if ok then
-        return cmp.update_capabilities(capabilities)
-    end
-    return capabilities
-end
-
-function M.disable_formatting(client)
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
-end
-
 function M.mappings(bufnr, mappings)
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)
@@ -53,6 +39,11 @@ function M.default_mappings(bufnr, mappings)
     }
     mappings = vim.tbl_deep_extend('keep', mappings or {}, defaults)
     M.mappings(bufnr, mappings)
+end
+
+function M.disable_formatting(client)
+    client.resolved_capabilities.document_formatting = false
+    client.resolved_capabilities.document_range_formatting = false
 end
 
 function M.format_on_save(client)

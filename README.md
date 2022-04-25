@@ -58,6 +58,9 @@ require('nvim-lsp-setup').setup({
     -- on_attach = function(client, bufnr) {
     --     utils.format_on_save(client)
     -- },
+    -- Global capabilities
+    -- capabilities = vim.lsp.protocol.make_client_capabilities(),
+    -- LSP servers
     servers = {
         -- Install LSP servers automatically
         -- LSP server configuration please see: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
