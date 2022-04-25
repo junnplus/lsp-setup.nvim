@@ -33,7 +33,6 @@ Plug 'williamboman/nvim-lsp-installer'
 
 ```lua
 require('nvim-lsp-setup').setup({
-    default_mappings = true,
     -- Default mappings
     -- gD = 'lua vim.lsp.buf.declaration()',
     -- gd = 'lua vim.lsp.buf.definition()',
@@ -48,12 +47,13 @@ require('nvim-lsp-setup').setup({
     -- ['<space>e'] = 'lua vim.lsp.diagnostic.show_line_diagnostics()',
     -- ['[d'] = 'lua vim.lsp.diagnostic.goto_prev()',
     -- [']d'] = 'lua vim.lsp.diagnostic.goto_next()',
-    mappings = {
-    -- Example mappings for telescope pickers
+    default_mappings = true,
+    -- Custom mappings
+    -- Example mappings for telescope pickers:
     -- gd = 'lua require"telescope.builtin".lsp_definitions()',
     -- gi = 'lua require"telescope.builtin".lsp_implementations()',
     -- gr = 'lua require"telescope.builtin".lsp_references()',
-    },
+    mappings = {},
     -- Global on_attach
     -- on_attach = function(client, bufnr) {
     --     utils.format_on_save(client)
@@ -74,15 +74,6 @@ require('nvim-lsp-setup').setup({
                 },
             },
         },
-        -- Setup sumneko_lua with lua-dev
-        -- sumneko_lua = require('lua-dev').setup({
-        --     lspconfig = {
-        --         on_attach = function(client, _)
-        --              -- Disable formatting
-        --              require('nvim-lsp-setup.utils').disable_formatting(client)
-        --         end,
-        --     },
-        -- }),
     },
 })
 ```
@@ -93,6 +84,25 @@ require('nvim-lsp-setup').setup({
 
 If installed, will auto advertise capabilities to LSP servers.
 
+### [lua-dev](https://github.com/folke/lua-dev.nvim)
+
+```lua
+-- Setup sumneko_lua with lua-dev
+require('nvim-lsp-setup').setup({
+    servers = {
+        sumneko_lua = require('lua-dev').setup({
+            lspconfig = {
+                on_attach = function(client, _)
+                    -- Avoiding LSP formatting conflicts.
+                    -- https://github.com/jose-elias-alvarez/null-ls.nvim/wiki/Avoiding-LSP-formatting-conflicts
+                    require('nvim-lsp-setup.utils').disable_formatting(client)
+                end,
+            },
+        }),
+    }
+})
+
+```
 ### [rust-tools.nvim](https://github.com/simrat39/rust-tools.nvim)
 
 Using `require('nvim-lsp-setup.rust-tools').setup({})` instead of `require('rust-tools').setup({})`.
