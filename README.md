@@ -131,6 +131,18 @@ require('nvim-lsp-setup').setup({
 })
 ```
 
+### [clangd_extensions.nvim](https://github.com/p00f/clangd_extensions.nvim)
+
+Using `require('nvim-lsp-setup.clangd_extensions').setup({})` instead of `require('clangd_extensions').setup({})`.
+
+```lua
+require('nvim-lsp-setup').setup({
+    servers = {
+        clangd = require('nvim-lsp-setup.clangd_extensions').setup({})
+    }
+})
+```
+
 ## Contributing
 
 Bug reports and feature requests are welcome! PRs are doubly welcome!
