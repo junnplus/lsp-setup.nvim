@@ -55,9 +55,9 @@ require('nvim-lsp-setup').setup({
     -- gr = 'lua require"telescope.builtin".lsp_references()',
     mappings = {},
     -- Global on_attach
-    -- on_attach = function(client, bufnr) {
-    --     utils.format_on_save(client)
-    -- },
+    -- on_attach = function(client, bufnr) 
+    --     require('nvim-lsp-setup.utils').format_on_save(client)
+    -- end,
     -- Global capabilities
     -- capabilities = vim.lsp.protocol.make_client_capabilities(),
     -- LSP servers
