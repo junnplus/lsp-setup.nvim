@@ -33,6 +33,18 @@ Plug 'williamboman/nvim-lsp-installer'
 
 ```lua
 require('nvim-lsp-setup').setup({
+    servers = {
+        pylsp = {}
+    }
+})
+```
+
+You can replace `pylsp` with the LSP server name you need, see [available LSPs](https://github.com/williamboman/nvim-lsp-installer#available-lsps).
+
+### Setup structure
+
+```lua
+require('nvim-lsp-setup').setup({
     -- Default mappings
     -- gD = 'lua vim.lsp.buf.declaration()',
     -- gd = 'lua vim.lsp.buf.definition()',
@@ -48,19 +60,19 @@ require('nvim-lsp-setup').setup({
     -- ['[d'] = 'lua vim.lsp.diagnostic.goto_prev()',
     -- [']d'] = 'lua vim.lsp.diagnostic.goto_next()',
     default_mappings = true,
-    -- Custom mappings
+    -- Custom mappings, will overwrite the default mappings for the same key
     -- Example mappings for telescope pickers:
     -- gd = 'lua require"telescope.builtin".lsp_definitions()',
     -- gi = 'lua require"telescope.builtin".lsp_implementations()',
     -- gr = 'lua require"telescope.builtin".lsp_references()',
     mappings = {},
     -- Global on_attach
-    -- on_attach = function(client, bufnr) 
-    --     require('nvim-lsp-setup.utils').format_on_save(client)
-    -- end,
+    on_attach = function(client, bufnr)
+        require('nvim-lsp-setup.utils').format_on_save(client)
+    end,
     -- Global capabilities
-    -- capabilities = vim.lsp.protocol.make_client_capabilities(),
-    -- LSP servers
+    capabilities = vim.lsp.protocol.make_client_capabilities(),
+    -- Configuration of LSP servers 
     servers = {
         -- Install LSP servers automatically
         -- LSP server configuration please see: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
