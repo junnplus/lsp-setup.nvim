@@ -45,6 +45,9 @@ You can replace `pylsp` with the LSP server name you need, see [available LSPs](
 
 ```lua
 require('nvim-lsp-setup').setup({
+    -- nvim-lsp-installer
+    -- https://github.com/williamboman/nvim-lsp-installer#configuration
+    installer = {},
     -- Default mappings
     -- gD = 'lua vim.lsp.buf.declaration()',
     -- gd = 'lua vim.lsp.buf.definition()',
@@ -76,19 +79,19 @@ require('nvim-lsp-setup').setup({
     servers = {
         -- Install LSP servers automatically
         -- LSP server configuration please see: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-        pylsp = {},
-        rust_analyzer = {
-            settings = {
-                ['rust-analyzer'] = {
-                    cargo = {
-                        loadOutDirsFromCheck = true,
-                    },
-                    procMacro = {
-                        enable = true,
-                    },
-                },
-            },
-        },
+        -- pylsp = {},
+        -- rust_analyzer = {
+        --     settings = {
+        --         ['rust-analyzer'] = {
+        --             cargo = {
+        --                 loadOutDirsFromCheck = true,
+        --             },
+        --             procMacro = {
+        --                 enable = true,
+        --             },
+        --         },
+        --     },
+        -- },
     },
 })
 ```

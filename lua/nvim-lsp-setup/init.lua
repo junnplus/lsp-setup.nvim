@@ -1,9 +1,11 @@
 local utils = require('nvim-lsp-setup.utils')
+local notify = require('nvim-lsp-installer.notify')
 
 local M = {}
 
 function M.setup(opts)
     opts = vim.tbl_deep_extend('keep', opts, {
+        installer = {},
         default_mappings = true,
         mappings = {},
         servers = {},
@@ -18,8 +20,25 @@ function M.setup(opts)
         end,
     })
 
-    utils.lsp_installer(servers).on_server_ready(function(server)
-        local config = vim.tbl_deep_extend('keep', servers[server.name], {
+    local lsp_installer = require('nvim-lsp-installer')
+    assert(lsp_installer.setup, 'Please upgrade nvim-lsp-installer')
+
+    if require('nvim-lsp-installer.settings').uses_new_setup == false then
+        lsp_installer.setup(opts.installer)
+    end
+
+    for server_name, config in pairs(servers) do
+        local candidates = {}
+        local found, server = lsp_installer.get_server(server_name)
+        if found and not server:is_installed() then
+            table.insert(candidates, server_name)
+            server:install()
+        end
+        if #candidates > 0 then
+            notify('Installing LSP servers: ' .. table.concat(candidates, ', '))
+        end
+
+        config = vim.tbl_deep_extend('keep', config, {
             on_attach = function(client, bufnr)
                 if opts.on_attach then
                     opts.on_attach(client, bufnr)
@@ -51,8 +70,9 @@ function M.setup(opts)
 
             on_attach(client, bufnr)
         end
-        server:setup(config)
-    end)
+
+        require('lspconfig')[server_name].setup(config)
+    end
 end
 
 return M

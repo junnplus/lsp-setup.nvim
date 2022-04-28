@@ -1,16 +1,5 @@
 local M = {}
 
-function M.lsp_installer(servers)
-    local lsp_installer = require('nvim-lsp-installer')
-    for name, _ in pairs(servers) do
-        local found, server = lsp_installer.get_server(name)
-        if found and not server:is_installed() then
-            server:install()
-        end
-    end
-    return lsp_installer
-end
-
 function M.mappings(bufnr, mappings)
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)

@@ -191,7 +191,7 @@ function M.setup(opts)
 
     lcommands.setup_lsp_commands()
 
-    M.start_standalone_if_required()
+    -- M.start_standalone_if_required()
 
     if pcall(require, 'dap') then
         rt_dap.setup_adapter()
