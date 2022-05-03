@@ -22,9 +22,9 @@ function M.default_mappings(bufnr, mappings)
         ['<space>rn'] = 'lua vim.lsp.buf.rename()',
         ['<space>ca'] = 'lua vim.lsp.buf.code_action()',
         ['<space>f'] = 'lua vim.lsp.buf.formatting()',
-        ['<space>e'] = 'lua vim.lsp.diagnostic.show_line_diagnostics()',
-        ['[d'] = 'lua vim.lsp.diagnostic.goto_prev()',
-        [']d'] = 'lua vim.lsp.diagnostic.goto_next()',
+        ['<space>e'] = 'lua vim.diagnostic.open_float()',
+        ['[d'] = 'lua vim.diagnostic.goto_prev()',
+        [']d'] = 'lua vim.diagnostic.goto_next()',
     }
     mappings = vim.tbl_deep_extend('keep', mappings or {}, defaults)
     M.mappings(bufnr, mappings)
