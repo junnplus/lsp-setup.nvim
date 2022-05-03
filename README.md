@@ -59,9 +59,9 @@ require('nvim-lsp-setup').setup({
     -- ['<space>rn'] = 'lua vim.lsp.buf.rename()',
     -- ['<space>ca'] = 'lua vim.lsp.buf.code_action()',
     -- ['<space>f'] = 'lua vim.lsp.buf.formatting()',
-    -- ['<space>e'] = 'lua vim.lsp.diagnostic.show_line_diagnostics()',
-    -- ['[d'] = 'lua vim.lsp.diagnostic.goto_prev()',
-    -- [']d'] = 'lua vim.lsp.diagnostic.goto_next()',
+    -- ['<space>e'] = 'lua vim.diagnostic.open_float()',
+    -- ['[d'] = 'lua vim.diagnostic.goto_prev()',
+    -- [']d'] = 'lua vim.diagnostic.goto_next()',
     default_mappings = true,
     -- Custom mappings, will overwrite the default mappings for the same key
     -- Example mappings for telescope pickers:
