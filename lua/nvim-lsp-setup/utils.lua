@@ -21,7 +21,7 @@ function M.default_mappings(bufnr, mappings)
         ['<C-k>'] = 'lua vim.lsp.buf.signature_help()',
         ['<space>rn'] = 'lua vim.lsp.buf.rename()',
         ['<space>ca'] = 'lua vim.lsp.buf.code_action()',
-        ['<space>f'] = 'lua vim.lsp.buf.formatting()',
+        ['<space>f'] = 'lua vim.lsp.buf.format()',
         ['<space>e'] = 'lua vim.diagnostic.open_float()',
         ['[d'] = 'lua vim.diagnostic.goto_prev()',
         [']d'] = 'lua vim.diagnostic.goto_next()',
@@ -31,8 +31,8 @@ function M.default_mappings(bufnr, mappings)
 end
 
 function M.disable_formatting(client)
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
+    client.server.document_formatting = false
+    client.server.document_range_formatting = false
 end
 
 function M.format_on_save(client)
@@ -40,7 +40,7 @@ function M.format_on_save(client)
         vim.cmd([[
           augroup Format
             au! * <buffer>
-            au BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000)
+            au BufWritePre <buffer> lua vim.lsp.buf.format(nil, 1000)
           augroup END
         ]])
 
