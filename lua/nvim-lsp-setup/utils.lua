@@ -31,12 +31,12 @@ function M.default_mappings(bufnr, mappings)
 end
 
 function M.disable_formatting(client)
-    client.server.document_formatting = false
-    client.server.document_range_formatting = false
+    client.server_capabilities.document_formatting = false
+    client.server_capabilities.document_range_formatting = false
 end
 
 function M.format_on_save(client)
-    if client.resolved_capabilities.document_formatting then
+    if client.server_capabilities.document_formatting then
         vim.cmd([[
           augroup Format
             au! * <buffer>
