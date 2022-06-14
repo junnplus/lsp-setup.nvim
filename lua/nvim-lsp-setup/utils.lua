@@ -40,7 +40,7 @@ function M.format_on_save(client)
         vim.cmd([[
           augroup Format
             au! * <buffer>
-            au BufWritePre <buffer> lua vim.lsp.buf.format(nil, 1000)
+            au BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1000)
           augroup END
         ]])
 
