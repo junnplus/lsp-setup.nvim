@@ -14,7 +14,6 @@ function M.default_mappings(bufnr, mappings)
     local defaults = {
         gD = 'lua vim.lsp.buf.declaration()',
         gd = 'lua vim.lsp.buf.definition()',
-        gt = 'lua vim.lsp.buf.type_definition()',
         gi = 'lua vim.lsp.buf.implementation()',
         gr = 'lua vim.lsp.buf.references()',
         K = 'lua vim.lsp.buf.hover()',
