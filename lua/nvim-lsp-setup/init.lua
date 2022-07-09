@@ -48,10 +48,6 @@ function M.setup(opts)
             end,
             capabilities = opts.capabilities,
             settings = {},
-            flags = {
-                -- This will be the default in neovim 0.7+
-                debounce_text_changes = 150,
-            },
         })
 
         local capabilities = config.capabilities

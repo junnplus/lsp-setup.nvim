@@ -4,7 +4,7 @@ A simple wrapper for [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) 
 
 ## Installation
 
-- Neovim >= 0.6.0
+- Neovim >= 0.7
 - nvim-lspconfig
 - nvim-lsp-installer
 
