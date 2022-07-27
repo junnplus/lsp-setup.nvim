@@ -1,12 +1,12 @@
 # nvim-lsp-setup
 
-A simple wrapper for [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) and [nvim-lsp-installer](https://github.com/williamboman/nvim-lsp-installer) to easily setup LSP servers.
+A simple wrapper for [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) and [mason-lspconfig](https://github.com/williamboman/mason-lspconfig.nvim) to easily setup LSP servers.
 
 ## Installation
 
 - Neovim >= 0.7
 - nvim-lspconfig
-- nvim-lsp-installer
+- mason.nvim & mason-lspconfig.nvim
 
 ### [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
@@ -15,7 +15,8 @@ use {
     'junnplus/nvim-lsp-setup',
     requires = {
         'neovim/nvim-lspconfig',
-        'williamboman/nvim-lsp-installer',
+        'williamboman/mason.nvim',
+        'williamboman/mason-lspconfig.nvim',
     }
 }
 ```
@@ -25,7 +26,8 @@ use {
 ```vim
 Plug 'junnplus/nvim-lsp-setup'
 Plug 'neovim/nvim-lspconfig'
-Plug 'williamboman/nvim-lsp-installer'
+Plug 'williamboman/mason.nvim'
+Plug 'williamboman/mason-lspconfig.nvim'
 ```
 
 
@@ -45,9 +47,6 @@ You can replace `pylsp` with the LSP server name you need, see [available LSPs](
 
 ```lua
 require('nvim-lsp-setup').setup({
-    -- nvim-lsp-installer
-    -- https://github.com/williamboman/nvim-lsp-installer#configuration
-    installer = {},
     -- Default mappings
     -- gD = 'lua vim.lsp.buf.declaration()',
     -- gd = 'lua vim.lsp.buf.definition()',
