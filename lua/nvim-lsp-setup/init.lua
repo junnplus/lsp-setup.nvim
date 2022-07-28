@@ -1,11 +1,10 @@
+local _ = require('mason-core.functional')
 local utils = require('nvim-lsp-setup.utils')
-local notify = require('nvim-lsp-installer.notify')
 
 local M = {}
 
 function M.setup(opts)
     opts = vim.tbl_deep_extend('keep', opts, {
-        installer = {},
         default_mappings = true,
         mappings = {},
         servers = {},
@@ -20,23 +19,15 @@ function M.setup(opts)
         end,
     })
 
-    local lsp_installer = require('nvim-lsp-installer')
-    assert(lsp_installer.setup, 'Please upgrade nvim-lsp-installer')
-
-    if require('nvim-lsp-installer.settings').uses_new_setup == false then
-        lsp_installer.setup(opts.installer)
+    if vim.api.nvim_get_commands({})['Mason'] == nil then
+        require('mason').setup({})
     end
+    require('mason-lspconfig').setup({
+        ensure_installed = _.keys(servers),
+    })
 
-    for server_name, config in pairs(servers) do
-        local candidates = {}
-        local found, server = lsp_installer.get_server(server_name)
-        if found and not server:is_installed() then
-            table.insert(candidates, server_name)
-            server:install()
-        end
-        if #candidates > 0 then
-            notify('Installing LSP servers: ' .. table.concat(candidates, ', '))
-        end
+    for server, config in pairs(servers) do
+        local server_name, _ = require('mason-core.package').Parse(server)
 
         config = vim.tbl_deep_extend('keep', config, {
             on_attach = function(client, bufnr)
