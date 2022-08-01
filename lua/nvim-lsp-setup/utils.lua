@@ -4,6 +4,7 @@ function M.mappings(bufnr, mappings)
     local function buf_set_keymap(...)
         vim.api.nvim_buf_set_keymap(bufnr, ...)
     end
+
     local opts = { noremap = true, silent = true }
     for key, cmd in pairs(mappings or {}) do
         buf_set_keymap('n', key, '<cmd>' .. cmd .. '<CR>', opts)
@@ -30,15 +31,18 @@ function M.default_mappings(bufnr, mappings)
 end
 
 function M.disable_formatting(client)
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
+    if vim.fn.has('nvim-0.8') then
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
+    else
+        client.server_capabilities.document_formatting = false
+        client.server_capabilities.document_range_formatting = false
+    end
 end
 
 function M.format_on_save(client)
-    if client.resolved_capabilities.document_formatting then
-        -- nvim 0.7+
-        local lsp_format_augroup = 'lsp_format_augroup'
-        vim.api.nvim_create_augroup(lsp_format_augroup, { clear = true })
+    if client.supports_method('textDocument/formatting') then
+        local lsp_format_augroup = vim.api.nvim_create_augroup('lsp_format_augroup', { clear = true })
         vim.api.nvim_create_autocmd('BufWritePre', {
             group = lsp_format_augroup,
             callback = function()

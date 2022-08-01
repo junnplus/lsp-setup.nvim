@@ -8,10 +8,9 @@ local function lsp_servers(opts)
 
         config = vim.tbl_deep_extend('keep', config, {
             on_attach = function(client, bufnr)
+                utils.format_on_save(client)
                 if opts.on_attach then
                     opts.on_attach(client, bufnr)
-                else
-                    utils.format_on_save(client)
                 end
             end,
             capabilities = opts.capabilities,
