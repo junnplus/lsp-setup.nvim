@@ -68,6 +68,8 @@ require('nvim-lsp-setup').setup({
     -- gi = 'lua require"telescope.builtin".lsp_implementations()',
     -- gr = 'lua require"telescope.builtin".lsp_references()',
     mappings = {},
+    -- configurable format_on_save timeout
+    format_on_save_timeout = 1000,
     -- Global on_attach
     on_attach = function(client, bufnr)
         -- Support custom the on_attach function for global.
