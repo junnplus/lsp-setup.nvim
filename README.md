@@ -34,7 +34,7 @@ Plug 'williamboman/mason-lspconfig.nvim'
 ## Usage
 
 ```lua
-require('nvim-lsp-setup').setup({
+require('lsp-setup').setup({
     servers = {
         pylsp = {}
     }
@@ -46,7 +46,7 @@ You can replace `pylsp` with the LSP server name you need, see [available LSPs](
 ### Setup structure
 
 ```lua
-require('nvim-lsp-setup').setup({
+require('lsp-setup').setup({
     -- Default mappings
     -- gD = 'lua vim.lsp.buf.declaration()',
     -- gd = 'lua vim.lsp.buf.definition()',
@@ -105,7 +105,7 @@ If installed, will auto advertise capabilities to LSP servers.
 
 ```lua
 -- Setup sumneko_lua with lua-dev
-require('nvim-lsp-setup').setup({
+require('lsp-setup').setup({
     servers = {
         sumneko_lua = require('lua-dev').setup({
             lspconfig = {
@@ -124,12 +124,12 @@ require('nvim-lsp-setup').setup({
 ```
 ### [rust-tools.nvim](https://github.com/simrat39/rust-tools.nvim)
 
-Using `require('nvim-lsp-setup.rust-tools').setup({})` instead of `require('rust-tools').setup({})`.
+Using `require('lsp-setup.rust-tools').setup({})` instead of `require('rust-tools').setup({})`.
 
 ```lua
-require('nvim-lsp-setup').setup({
+require('lsp-setup').setup({
     servers = {
-        rust_analyzer = require('nvim-lsp-setup.rust-tools').setup({
+        rust_analyzer = require('lsp-setup.rust-tools').setup({
             server = {
                 settings = {
                     ['rust-analyzer'] = {
@@ -149,12 +149,12 @@ require('nvim-lsp-setup').setup({
 
 ### [clangd_extensions.nvim](https://github.com/p00f/clangd_extensions.nvim)
 
-Using `require('nvim-lsp-setup.clangd_extensions').setup({})` instead of `require('clangd_extensions').setup({})`.
+Using `require('lsp-setup.clangd_extensions').setup({})` instead of `require('clangd_extensions').setup({})`.
 
 ```lua
-require('nvim-lsp-setup').setup({
+require('lsp-setup').setup({
     servers = {
-        clangd = require('nvim-lsp-setup.clangd_extensions').setup({})
+        clangd = require('lsp-setup.clangd_extensions').setup({})
     }
 })
 ```
