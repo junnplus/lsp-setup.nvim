@@ -71,6 +71,7 @@ require('lsp-setup').setup({
     -- Global on_attach
     on_attach = function(client, bufnr)
         -- Support custom the on_attach function for global.
+        require('nvim-lsp-setup.utils').format_on_save(client)
     end,
     -- Global capabilities
     capabilities = vim.lsp.protocol.make_client_capabilities(),
