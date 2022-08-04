@@ -3,15 +3,16 @@ local utils = require('nvim-lsp-setup.utils')
 
 local function lsp_servers(opts)
     local servers = {}
+    local default_on_attach = function(client, bufnr)
+      utils.format_on_save(client)
+    end
+    opts.on_attach = opts.on_attach or default_on_attach
     for server, config in pairs(opts.servers) do
         local server_name, _ = require('mason-core.package').Parse(server)
 
         config = vim.tbl_deep_extend('keep', config, {
             on_attach = function(client, bufnr)
-                utils.format_on_save(client)
-                if opts.on_attach then
-                    opts.on_attach(client, bufnr)
-                end
+                opts.on_attach(client, bufnr)
             end,
             capabilities = opts.capabilities,
             settings = {},
