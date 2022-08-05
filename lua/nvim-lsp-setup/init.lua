@@ -7,12 +7,7 @@ local function lsp_servers(opts)
         local server_name, _ = require('mason-core.package').Parse(server)
 
         config = vim.tbl_deep_extend('keep', config, {
-            on_attach = function(client, bufnr)
-                utils.format_on_save(client)
-                if opts.on_attach then
-                    opts.on_attach(client, bufnr)
-                end
-            end,
+            on_attach = opts.on_attach,
             capabilities = opts.capabilities,
             settings = {},
         })
@@ -48,6 +43,10 @@ function M.setup(opts)
         mappings = {},
         servers = {},
         capabilities = vim.lsp.protocol.make_client_capabilities(),
+        ---@diagnostic disable-next-line: unused-local
+        on_attach = function(client, bufnr)
+            utils.format_on_save(client)
+        end,
     })
 
     local servers = lsp_servers(opts)

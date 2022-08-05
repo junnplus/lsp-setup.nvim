@@ -70,7 +70,9 @@ require('lsp-setup').setup({
     mappings = {},
     -- Global on_attach
     on_attach = function(client, bufnr)
-        -- Support custom the on_attach function for global.
+        -- Support custom the on_attach function for global
+        -- Formatting on save as default
+        require('lsp-setup.utils').format_on_save(client)
     end,
     -- Global capabilities
     capabilities = vim.lsp.protocol.make_client_capabilities(),
@@ -120,7 +122,6 @@ require('lsp-setup').setup({
         }),
     }
 })
-
 ```
 ### [rust-tools.nvim](https://github.com/simrat39/rust-tools.nvim)
 
