@@ -1,4 +1,4 @@
-# nvim-lsp-setup
+# lsp-setup.nvim
 
 A simple wrapper for [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) and [mason-lspconfig](https://github.com/williamboman/mason-lspconfig.nvim) to easily setup LSP servers.
 
@@ -12,7 +12,7 @@ A simple wrapper for [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) 
 
 ```lua
 use {
-    'junnplus/nvim-lsp-setup',
+    'junnplus/lsp-setup.nvim',
     requires = {
         'neovim/nvim-lspconfig',
         'williamboman/mason.nvim',
@@ -24,7 +24,7 @@ use {
 ### [vim-plug](https://github.com/junegunn/vim-plug)
 
 ```vim
-Plug 'junnplus/nvim-lsp-setup'
+Plug 'junnplus/lsp-setup.nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'williamboman/mason.nvim'
 Plug 'williamboman/mason-lspconfig.nvim'

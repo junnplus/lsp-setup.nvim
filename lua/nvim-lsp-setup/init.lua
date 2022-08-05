@@ -1,5 +1,5 @@
 local _ = require('mason-core.functional')
-local utils = require('nvim-lsp-setup.utils')
+local utils = require('lsp-setup.utils')
 
 local function lsp_servers(opts)
     local servers = {}
