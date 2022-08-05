@@ -41,7 +41,17 @@ require('lsp-setup').setup({
 })
 ```
 
-You can replace `pylsp` with the LSP server name you need, see [available LSPs](https://github.com/williamboman/nvim-lsp-installer#available-lsps).
+You can replace `pylsp` with the LSP server name you need, see [available LSPs](https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers).
+
+Also support installing custom versions of LSP servers, for example:
+
+```lua
+require('lsp-setup').setup({
+    servers = {
+        ['rust_analyzer@nightly'] = {}
+    }
+})
+```
 
 ### Setup structure
 
