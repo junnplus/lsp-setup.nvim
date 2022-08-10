@@ -1,54 +1,59 @@
--- Copy from: https://github.com/simrat39/rust-tools.nvim/blob/cd09ad28a20c9bb9dc25743dde96f328f605e57e/lua/rust-tools.lua
+-- Copy from: https://github.com/simrat39/rust-tools.nvim/blob/06c9361a0e750a44f8f489c071bf3424ae733d5e/lua/rust-tools/lsp.lua
 -- MIT License, Copyright (c) 2022 Simrat
 
-local config = require('rust-tools.config')
-local utils = require('rust-tools.utils.utils')
+local rt = require('rust-tools')
 local lspconfig_utils = require('lspconfig.util')
-local rt_dap = require('rust-tools.dap')
-local server_status = require('rust-tools.server_status')
-local lcommands = require('rust-tools/commands')
 
 local M = {}
 
 local function setup_commands()
-    local lsp_opts = config.options.server
+    local lsp_opts = rt.config.options.server
 
     lsp_opts.commands = vim.tbl_deep_extend('force', lsp_opts.commands or {}, {
-        RustSetInlayHints = {
-            require('rust-tools.inlay_hints').set_inlay_hints,
+        RustCodeAction = {
+            rt.code_action_group.code_action_group,
         },
-        RustDisableInlayHints = {
-            require('rust-tools.inlay_hints').disable_inlay_hints,
-        },
-        RustToggleInlayHints = {
-            require('rust-tools.inlay_hints').toggle_inlay_hints,
-        },
-        RustExpandMacro = { require('rust-tools.expand_macro').expand_macro },
-        RustOpenCargo = { require('rust-tools.open_cargo_toml').open_cargo_toml },
-        RustParentModule = { require('rust-tools.parent_module').parent_module },
-        RustJoinLines = { require('rust-tools.join_lines').join_lines },
-        RustRunnables = {
-            require('rust-tools.runnables').runnables,
+        RustViewCrateGraph = {
+            function(backend, output, pipe)
+                rt.crate_graph.view_crate_graph(backend, output, pipe)
+            end,
+            '-nargs=* -complete=customlist,v:lua.rust_tools_get_graphviz_backends',
+            description = '`:RustViewCrateGraph [<backend> [<output>]]` Show the crate graph',
         },
         RustDebuggables = {
-            require('rust-tools.debuggables').debuggables,
+            rt.debuggables.debuggables,
         },
-        RustHoverActions = { require('rust-tools.hover_actions').hover_actions },
-        RustHoverRange = { require('rust-tools.hover_range').hover_range },
+        RustExpandMacro = { rt.expand_macro.expand_macro },
+        RustOpenExternalDocs = {
+            rt.external_docs.open_external_docs,
+        },
+        RustHoverActions = { rt.hover_actions.hover_actions },
+        RustHoverRange = { rt.hover_range.hover_range },
+        RustEnableInlayHints = {
+            rt.inlay_hints.enable,
+        },
+        RustDisableInlayHints = {
+            rt.inlay_hints.disable,
+        },
+        RustSetInlayHints = {
+            rt.inlay_hints.set,
+        },
+        RustUnsetInlayHints = {
+            rt.inlay_hints.unset,
+        },
+        RustJoinLines = { rt.join_lines.join_lines },
         RustMoveItemDown = {
-            require('rust-tools.move_item').move_item,
+            rt.move_item.move_item,
         },
         RustMoveItemUp = {
             function()
                 require('rust-tools.move_item').move_item(true)
             end,
         },
-        RustViewCrateGraph = {
-            function(backend, output, pipe)
-                require('rust-tools.crate_graph').view_crate_graph(backend, output, pipe)
-            end,
-            '-nargs=* -complete=customlist,v:lua.rust_tools_get_graphviz_backends',
-            description = '`:RustViewCrateGraph [<backend> [<output>]]` Show the crate graph',
+        RustOpenCargo = { rt.open_cargo_toml.open_cargo_toml },
+        RustParentModule = { rt.parent_module.parent_module },
+        RustRunnables = {
+            rt.runnables.runnables,
         },
         RustSSR = {
             function(query)
@@ -58,36 +63,41 @@ local function setup_commands()
             description = '`:RustSSR [query]` Structural Search Replace',
         },
         RustReloadWorkspace = {
-            require('rust-tools/workspace_refresh').reload_workspace,
-        },
-        RustCodeAction = {
-            function()
-                require('rust-tools/code_action_group').code_action_group()
-            end,
+            rt.workspace_refresh.reload_workspace,
         },
     })
 end
 
 local function setup_handlers()
-    local lsp_opts = config.options.server
-    local tool_opts = config.options.tools
+    local lsp_opts = rt.config.options.server
+    local tool_opts = rt.config.options.tools
     local custom_handlers = {}
 
     if tool_opts.hover_with_actions then
-        custom_handlers['textDocument/hover'] = utils.mk_handler(require('rust-tools.hover_actions').handler)
+        vim.notify(
+            'rust-tools: hover_with_actions is deprecated, please setup a keybind to :RustHoverActions in on_attach instead'
+            ,
+            vim.log.levels.INFO
+        )
     end
 
-    custom_handlers['experimental/serverStatus'] = utils.mk_handler(server_status.handler)
+    custom_handlers['experimental/serverStatus'] = rt.utils.mk_handler(
+        rt.server_status.handler
+    )
 
-    lsp_opts.handlers = vim.tbl_deep_extend('force', custom_handlers, lsp_opts.handlers or {})
+    lsp_opts.handlers = vim.tbl_deep_extend(
+        'force',
+        custom_handlers,
+        lsp_opts.handlers or {}
+    )
 end
 
 local function setup_on_init()
-    local lsp_opts = config.options.server
+    local lsp_opts = rt.config.options.server
     local old_on_init = lsp_opts.on_init
 
     lsp_opts.on_init = function(...)
-        utils.override_apply_text_edits()
+        rt.utils.override_apply_text_edits()
         if old_on_init ~= nil then
             old_on_init(...)
         end
@@ -95,7 +105,7 @@ local function setup_on_init()
 end
 
 local function setup_capabilities()
-    local lsp_opts = config.options.server
+    local lsp_opts = rt.config.options.server
     local capabilities = vim.lsp.protocol.make_client_capabilities()
 
     -- snippets
@@ -127,7 +137,11 @@ local function setup_capabilities()
         },
     }
 
-    lsp_opts.capabilities = vim.tbl_deep_extend('force', capabilities, lsp_opts.capabilities or {})
+    lsp_opts.capabilities = vim.tbl_deep_extend(
+        'force',
+        capabilities,
+        lsp_opts.capabilities or {}
+    )
 end
 
 local function get_root_dir(filename)
@@ -161,23 +175,60 @@ local function get_root_dir(filename)
 end
 
 local function setup_root_dir()
-    local lsp_opts = config.options.server
+    local lsp_opts = rt.config.options.server
     if not lsp_opts.root_dir then
         lsp_opts.root_dir = get_root_dir
     end
 end
 
-function M.start_standalone_if_required()
-    local lsp_opts = config.options.server
-    local current_buf = vim.api.nvim_get_current_buf()
-
-    if lsp_opts.standalone and utils.is_bufnr_rust(current_buf) and (get_root_dir() == nil) then
-        require('rust-tools.standalone').start_standalone_client()
-    end
-end
-
 function M.setup(opts)
-    config.setup(opts)
+    rt.code_action_group = require('rust-tools.code_action_group')
+    rt.commands = require('rust-tools.commands')
+    rt.config = require('rust-tools.config')
+    rt.crate_graph = require('rust-tools.crate_graph')
+    rt.dap = require('rust-tools.dap')
+    rt.debuggables = require('rust-tools.debuggables')
+    rt.expand_macro = require('rust-tools.expand_macro')
+    rt.external_docs = require('rust-tools.external_docs')
+    rt.hover_actions = require('rust-tools.hover_actions')
+    rt.hover_range = require('rust-tools.hover_range')
+
+    local inlay = require('rust-tools.inlay_hints')
+    local hints = inlay.new()
+    rt.inlay_hints = {
+        enable = function()
+            inlay.enable(hints)
+        end,
+        disable = function()
+            inlay.disable(hints)
+        end,
+        set = function()
+            inlay.set(hints)
+        end,
+        unset = function()
+            inlay.unset()
+        end,
+        cache = function()
+            inlay.cache_render(hints)
+        end,
+        render = function()
+            inlay.render(hints)
+        end,
+    }
+
+    rt.join_lines = require('rust-tools.join_lines')
+    rt.lsp = require('rust-tools.lsp')
+    rt.move_item = require('rust-tools.move_item')
+    rt.open_cargo_toml = require('rust-tools.open_cargo_toml')
+    rt.parent_module = require('rust-tools.parent_module')
+    rt.runnables = require('rust-tools.runnables')
+    rt.server_status = require('rust-tools.server_status')
+    rt.ssr = require('rust-tools.ssr')
+    rt.standalone = require('rust-tools.standalone')
+    rt.workspace_refresh = require('rust-tools.workspace_refresh')
+    rt.utils = require('rust-tools.utils.utils')
+
+    rt.config.setup(opts)
 
     setup_capabilities()
     -- setup on_init
@@ -189,14 +240,12 @@ function M.setup(opts)
     -- setup user commands
     setup_commands()
 
-    lcommands.setup_lsp_commands()
-
-    -- M.start_standalone_if_required()
+    rt.commands.setup_lsp_commands()
 
     if pcall(require, 'dap') then
-        rt_dap.setup_adapter()
+        rt.dap.setup_adapter()
     end
-    return config.options.server
+    return rt.config.options.server
 end
 
 return M
