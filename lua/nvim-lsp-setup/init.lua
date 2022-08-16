@@ -57,6 +57,10 @@ function M.setup(opts)
     require('mason-lspconfig').setup_handlers({
         function(server_name)
             local config = servers[server_name] or {}
+            local ok, coq = pcall(require, 'coq')
+            if ok then
+                config = coq.lsp_ensure_capabilities(config)
+            end
             require('lspconfig')[server_name].setup(config)
         end
     })
