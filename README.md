@@ -109,7 +109,7 @@ require('lsp-setup').setup({
 
 ## Integrations
 
-### [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp)
+### [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp) or [coq_nvim](https://github.com/ms-jpq/coq_nvim)
 
 If installed, will auto advertise capabilities to LSP servers.
 
