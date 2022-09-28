@@ -1,6 +1,34 @@
 local _ = require('mason-core.functional')
 local utils = require('lsp-setup.utils')
 
+local function build_fallback_config(opts)
+    local config = {}
+    config = vim.tbl_deep_extend('keep', config, {
+        on_attach = opts.on_attach,
+        capabilities = opts.capabilities,
+        settings = {},
+    })
+
+    local capabilities = config.capabilities
+    local ok, cmp = pcall(require, 'cmp_nvim_lsp')
+    if ok then
+        config.capabilities = cmp.update_capabilities(capabilities)
+    end
+
+    local on_attach = config.on_attach
+    config.on_attach = function(client, bufnr)
+        if opts.default_mappings then
+            utils.default_mappings(bufnr, opts.mappings)
+        else
+            utils.mappings(bufnr, opts.mappings)
+        end
+
+        on_attach(client, bufnr)
+    end
+
+    return config
+end
+
 local function lsp_servers(opts)
     local servers = {}
     for server, config in pairs(opts.servers) do
@@ -49,6 +77,7 @@ function M.setup(opts)
         end,
     })
 
+    local fallback_cfg = build_fallback_config(opts)
     local servers = lsp_servers(opts)
 
     if vim.api.nvim_get_commands({})['Mason'] == nil then
@@ -59,7 +88,7 @@ function M.setup(opts)
     })
     require('mason-lspconfig').setup_handlers({
         function(server_name)
-            local config = servers[server_name] or {}
+            local config = servers[server_name] or fallback_cfg
             local ok, coq = pcall(require, 'coq')
             if ok then
                 config = coq.lsp_ensure_capabilities(config)
