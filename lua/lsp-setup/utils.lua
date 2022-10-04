@@ -21,7 +21,7 @@ function M.default_mappings(bufnr, mappings)
         ['<C-k>'] = 'lua vim.lsp.buf.signature_help()',
         ['<space>rn'] = 'lua vim.lsp.buf.rename()',
         ['<space>ca'] = 'lua vim.lsp.buf.code_action()',
-        ['<space>f'] = 'lua vim.lsp.buf.formatting()',
+        ['<space>f'] = 'lua vim.lsp.buf.formatting()', -- compatible with nvim-0.7
         ['<space>e'] = 'lua vim.diagnostic.open_float()',
         ['[d'] = 'lua vim.diagnostic.goto_prev()',
         [']d'] = 'lua vim.diagnostic.goto_next()',
@@ -46,7 +46,11 @@ function M.format_on_save(client)
         vim.api.nvim_create_autocmd('BufWritePre', {
             group = lsp_format_augroup,
             callback = function()
-                vim.lsp.buf.formatting_sync({}, 1000)
+                if vim.fn.has('nvim-0.8') then
+                    vim.lsp.buf.format()
+                else
+                    vim.lsp.buf.formatting_sync({}, 1000)
+                end
             end,
         })
     end
