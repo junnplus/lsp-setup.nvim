@@ -47,7 +47,7 @@ function M.format_on_save(client)
             group = lsp_format_augroup,
             callback = function()
                 if vim.fn.has('nvim-0.8') then
-                    vim.lsp.buf.format()
+                    vim.lsp.buf.formatting({})
                 else
                     vim.lsp.buf.formatting_sync({}, 1000)
                 end
