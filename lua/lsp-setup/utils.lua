@@ -31,7 +31,7 @@ function M.default_mappings(bufnr, mappings)
 end
 
 function M.disable_formatting(client)
-    if vim.fn.has('nvim-0.8') then
+    if vim.fn.has('nvim-0.8') == 1 then
         client.server_capabilities.documentFormattingProvider = false
         client.server_capabilities.documentRangeFormattingProvider = false
     else
@@ -46,7 +46,7 @@ function M.format_on_save(client)
         vim.api.nvim_create_autocmd('BufWritePre', {
             group = lsp_format_augroup,
             callback = function()
-                if vim.fn.has('nvim-0.8') then
+                if vim.fn.has('nvim-0.8') == 1 then
                     vim.lsp.buf.format()
                 else
                     vim.lsp.buf.formatting_sync({}, 1000)
