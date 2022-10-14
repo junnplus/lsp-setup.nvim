@@ -54,6 +54,9 @@ function M.setup(opts)
     if vim.api.nvim_get_commands({})['Mason'] == nil then
         require('mason').setup()
     end
+    require('mason-lspconfig').setup({
+      ensure_installed = _.keys(opts.servers),
+    })
     require('mason-lspconfig').setup_handlers({
         function(server_name)
             local config = servers[server_name] or {}
@@ -63,9 +66,6 @@ function M.setup(opts)
             end
             require('lspconfig')[server_name].setup(config)
         end
-    })
-    require('mason-lspconfig').setup({
-        ensure_installed = _.keys(opts.servers),
     })
 end
 
