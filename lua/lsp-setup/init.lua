@@ -12,7 +12,7 @@ local function build_fallback_config(opts)
     local capabilities = config.capabilities
     local ok, cmp = pcall(require, 'cmp_nvim_lsp')
     if ok then
-        config.capabilities = cmp.update_capabilities(capabilities)
+        config.capabilities = cmp.default_capabilities(capabilities)
     end
 
     local on_attach = config.on_attach
@@ -43,7 +43,7 @@ local function lsp_servers(opts)
         local capabilities = config.capabilities
         local ok, cmp = pcall(require, 'cmp_nvim_lsp')
         if ok then
-            config.capabilities = cmp.update_capabilities(capabilities)
+            config.capabilities = cmp.default_capabilities(capabilities)
         end
 
         local on_attach = config.on_attach
