@@ -15,7 +15,7 @@ local function lsp_servers(opts)
         local capabilities = config.capabilities
         local ok, cmp = pcall(require, 'cmp_nvim_lsp')
         if ok then
-            config.capabilities = cmp.update_capabilities(capabilities)
+            config.capabilities = cmp.default_capabilities(capabilities)
         end
 
         local on_attach = config.on_attach
@@ -55,7 +55,7 @@ function M.setup(opts)
         require('mason').setup()
     end
     require('mason-lspconfig').setup({
-      ensure_installed = _.keys(opts.servers),
+        ensure_installed = _.keys(opts.servers),
     })
     require('mason-lspconfig').setup_handlers({
         function(server_name)
