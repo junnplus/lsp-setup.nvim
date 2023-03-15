@@ -1,30 +1,29 @@
 local M = {}
 
 function M.mappings(bufnr, mappings)
-    local function buf_set_keymap(...)
-        vim.api.nvim_buf_set_keymap(bufnr, ...)
-    end
-
-    local opts = { noremap = true, silent = true }
+    local opts = { noremap = true, silent = true, buffer = bufnr }
     for key, cmd in pairs(mappings or {}) do
-        buf_set_keymap('n', key, '<cmd>' .. cmd .. '<CR>', opts)
+        if type(cmd) == 'string' and cmd:find('^lua') ~= nil then
+            cmd = ':' .. cmd .. '<cr>'
+        end
+        vim.keymap.set('n', key, cmd, opts)
     end
 end
 
 function M.default_mappings(bufnr, mappings)
     local defaults = {
-        gD = 'lua vim.lsp.buf.declaration()',
-        gd = 'lua vim.lsp.buf.definition()',
-        gi = 'lua vim.lsp.buf.implementation()',
-        gr = 'lua vim.lsp.buf.references()',
-        K = 'lua vim.lsp.buf.hover()',
-        ['<C-k>'] = 'lua vim.lsp.buf.signature_help()',
-        ['<space>rn'] = 'lua vim.lsp.buf.rename()',
-        ['<space>ca'] = 'lua vim.lsp.buf.code_action()',
-        ['<space>f'] = 'lua vim.lsp.buf.formatting()', -- compatible with nvim-0.7
-        ['<space>e'] = 'lua vim.diagnostic.open_float()',
-        ['[d'] = 'lua vim.diagnostic.goto_prev()',
-        [']d'] = 'lua vim.diagnostic.goto_next()',
+        gD = vim.lsp.buf.declaration,
+        gd = vim.lsp.buf.definition,
+        gi = vim.lsp.buf.implementation,
+        gr = vim.lsp.buf.references,
+        K = vim.lsp.buf.hover,
+        ['<C-k>'] = vim.lsp.buf.signature_help,
+        ['<space>rn'] = vim.lsp.buf.rename,
+        ['<space>ca'] = vim.lsp.buf.code_action,
+        ['<space>f'] = vim.lsp.buf.formatting, -- compatible with nvim-0.7
+        ['<space>e'] = vim.diagnostic.open_float,
+        ['[d'] = vim.diagnostic.goto_prev,
+        [']d'] = vim.diagnostic.goto_next,
     }
     mappings = vim.tbl_deep_extend('keep', mappings or {}, defaults)
     M.mappings(bufnr, mappings)
