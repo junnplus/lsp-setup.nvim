@@ -1,0 +1,6 @@
+[submodule "mason.nvim"]
+	path = mason.nvim
+	url = https://github.com/williamboman/mason.nvim.git
+[submodule "mason-lspconfig.nvim"]
+	path = mason-lspconfig.nvim
+	url = https://github.com/williamboman/mason-lspconfig.nvim.git
