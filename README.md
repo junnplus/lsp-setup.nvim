@@ -113,23 +113,14 @@ require('lsp-setup').setup({
 
 If installed, will auto advertise capabilities to LSP servers.
 
-### [lua-dev](https://github.com/folke/lua-dev.nvim)
+### [neodev](https://github.com/folke/neodev.nvim)
 
 ```lua
--- Setup sumneko_lua with lua-dev
+-- Setup lua_ls with neodev
+require('neodev').setup()
 require('lsp-setup').setup({
     servers = {
-        sumneko_lua = require('lua-dev').setup({
-            lspconfig = {
-                settings = {
-                    Lua = {
-                        format = {
-                            enable = true,
-                        }
-                    }
-                }
-            },
-        }),
+        lua_ls = {}
     }
 })
 ```
