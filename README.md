@@ -4,7 +4,7 @@ A simple wrapper for [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) 
 
 ## Installation
 
-- Neovim >= 0.8
+- Neovim >= 0.8 (>= 0.10 or nightly for inlay hints)
 - nvim-lspconfig
 - mason.nvim & mason-lspconfig.nvim
 
@@ -117,6 +117,14 @@ require('lsp-setup').setup({
         --     },
         -- },
     },
+    -- Configuration of LSP inlay hints
+    inlay_hints = {
+        enabled = false,
+        parameter_hints = true,
+        type_hints = true,
+        highlight = 'Comment',
+        priority = 0,
+    }
 })
 ```
 
@@ -177,3 +185,7 @@ require('lsp-setup').setup({
 ## Contributing
 
 Bug reports and feature requests are welcome! PRs are doubly welcome!
+
+## Acknowledgements
+
+The implementation of inlay hints is based on lvimuser's [lsp-inlayhints.nvim](https://github.com/lvimuser/lsp-inlayhints.nvim).
