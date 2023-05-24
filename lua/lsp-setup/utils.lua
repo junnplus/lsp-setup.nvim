@@ -10,25 +10,6 @@ function M.mappings(bufnr, mappings)
     end
 end
 
-function M.default_mappings(bufnr, mappings)
-    local defaults = {
-        gD = vim.lsp.buf.declaration,
-        gd = vim.lsp.buf.definition,
-        gi = vim.lsp.buf.implementation,
-        gr = vim.lsp.buf.references,
-        K = vim.lsp.buf.hover,
-        ['<C-k>'] = vim.lsp.buf.signature_help,
-        ['<space>rn'] = vim.lsp.buf.rename,
-        ['<space>ca'] = vim.lsp.buf.code_action,
-        ['<space>f'] = vim.lsp.buf.formatting, -- compatible with nvim-0.7
-        ['<space>e'] = vim.diagnostic.open_float,
-        ['[d'] = vim.diagnostic.goto_prev,
-        [']d'] = vim.diagnostic.goto_next,
-    }
-    mappings = vim.tbl_deep_extend('keep', mappings or {}, defaults)
-    M.mappings(bufnr, mappings)
-end
-
 function M.disable_formatting(client)
     if vim.fn.has('nvim-0.8') == 1 then
         client.server_capabilities.documentFormattingProvider = false
