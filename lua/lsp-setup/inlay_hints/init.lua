@@ -1,4 +1,4 @@
-local adapter = require('lsp-setup.adapter')
+local adapter = require('lsp-setup.inlay_hints.adapter')
 
 local ns = vim.api.nvim_create_namespace('textDocument/inlayHints')
 

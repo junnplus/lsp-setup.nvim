@@ -1,11 +1,10 @@
-local _ = require('mason-core.functional')
 local utils = require('lsp-setup.utils')
 local inlay_hints = require('lsp-setup.inlay_hints')
 
 local function lsp_servers(opts)
     local servers = {}
     for server, config in pairs(opts.servers) do
-        local server_name, _ = require('mason-core.package').Parse(server)
+        local server_name, _ = utils.parse_server(server)
 
         config = vim.tbl_deep_extend('keep', config, {
             on_attach = opts.on_attach,
@@ -46,6 +45,11 @@ local defaults = {
 local M = {}
 
 function M.setup(opts)
+    if vim.fn.has('nvim-0.8') ~= 1 then
+        vim.notify_once('LSP setup requires Neovim 0.8.0+', vim.log.levels.ERROR)
+        return
+    end
+
     opts = vim.tbl_deep_extend('keep', opts, {
         default_mappings = true,
         mappings = {},
@@ -78,7 +82,7 @@ function M.setup(opts)
         require('mason').setup()
     end
     require('mason-lspconfig').setup({
-        ensure_installed = _.keys(opts.servers),
+        ensure_installed = utils.get_keys(opts.servers),
     })
     require('mason-lspconfig').setup_handlers({
         function(server_name)

@@ -36,4 +36,20 @@ function M.format_on_save(client)
     end
 end
 
+-- @param server string
+-- @return string, string
+function M.parse_server(server)
+    return unpack(vim.split(server, '@'))
+end
+
+-- @param t table
+-- @return table
+function M.get_keys(t)
+    local keys = {}
+    for key, _ in pairs(t) do
+        table.insert(keys, key)
+    end
+    return keys
+end
+
 return M

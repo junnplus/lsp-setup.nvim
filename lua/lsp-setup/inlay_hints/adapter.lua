@@ -10,7 +10,11 @@ M.servers_config = {
     },
     lua_ls = {
         hint_adapter = function(h)
-            h.paddingLeft = false
+            if h.kind == 1 then
+                h.paddingRight = false
+            elseif h.kind == 2 then
+                h.paddingLeft = false
+            end
         end,
     },
 }
@@ -19,7 +23,7 @@ function M.adapt(result, client_name)
     result = result or {}
     for _, hint in ipairs(result) do
         if not hint then
-            return
+            goto continue
         end
 
         local kind = hint.kind
@@ -31,6 +35,7 @@ function M.adapt(result, client_name)
         if s and s.hint_adapter then
             s.hint_adapter(hint)
         end
+        ::continue::
     end
     return result
 end
