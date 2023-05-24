@@ -12,21 +12,13 @@ local function lsp_servers(opts)
             settings = {},
         })
 
-        local capabilities = config.capabilities
         local ok, cmp = pcall(require, 'cmp_nvim_lsp')
         if ok then
-            config.capabilities = cmp.default_capabilities(capabilities)
+            config.capabilities = cmp.default_capabilities(config.capabilities)
         end
-
-        local on_attach = config.on_attach
-        config.on_attach = function(client, bufnr)
-            if opts.default_mappings then
-                utils.default_mappings(bufnr, opts.mappings)
-            else
-                utils.mappings(bufnr, opts.mappings)
-            end
-
-            on_attach(client, bufnr)
+        local ok, coq = pcall(require, 'coq')
+        if ok then
+            config = coq.lsp_ensure_capabilities(config)
         end
 
         servers[server_name] = config
@@ -34,6 +26,21 @@ local function lsp_servers(opts)
 
     return servers
 end
+
+local defaults = {
+    gD = vim.lsp.buf.declaration,
+    gd = vim.lsp.buf.definition,
+    gi = vim.lsp.buf.implementation,
+    gr = vim.lsp.buf.references,
+    K = vim.lsp.buf.hover,
+    ['<C-k>'] = vim.lsp.buf.signature_help,
+    ['<space>rn'] = vim.lsp.buf.rename,
+    ['<space>ca'] = vim.lsp.buf.code_action,
+    ['<space>f'] = vim.lsp.buf.formatting,
+    ['<space>e'] = vim.diagnostic.open_float,
+    ['[d'] = vim.diagnostic.goto_prev,
+    [']d'] = vim.diagnostic.goto_next,
+}
 
 local M = {}
 
@@ -49,6 +56,19 @@ function M.setup(opts)
         end,
     })
 
+    vim.api.nvim_create_augroup('LspSetup', {})
+    vim.api.nvim_create_autocmd('LspAttach', {
+        group = 'LspSetup',
+        callback = function(args)
+            local bufnr = args.buf
+            local mappings = opts.mappings
+            if opts.default_mappings then
+                mappings = vim.tbl_deep_extend('keep', mappings or {}, defaults)
+            end
+            utils.mappings(bufnr, mappings)
+        end
+    })
+
     local servers = lsp_servers(opts)
 
     if vim.api.nvim_get_commands({})['Mason'] == nil then
@@ -59,10 +79,9 @@ function M.setup(opts)
     })
     require('mason-lspconfig').setup_handlers({
         function(server_name)
-            local config = servers[server_name] or {}
-            local ok, coq = pcall(require, 'coq')
-            if ok then
-                config = coq.lsp_ensure_capabilities(config)
+            local config = servers[server_name] or nil
+            if config == nil then
+                return
             end
             require('lspconfig')[server_name].setup(config)
         end
