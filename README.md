@@ -8,6 +8,19 @@ A simple wrapper for [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) 
 - nvim-lspconfig
 - mason.nvim & mason-lspconfig.nvim
 
+### [lazy.nvim](https://github.com/folke/lazy.nvim)
+
+```
+{
+    'junnplus/lsp-setup.nvim',
+    dependencies = {
+        'neovim/nvim-lspconfig',
+        'williamboman/mason.nvim',
+        'williamboman/mason-lspconfig.nvim',
+    },
+}
+```
+
 ### [packer.nvim](https://github.com/wbthomason/packer.nvim)
 
 ```lua
