@@ -1,5 +1,6 @@
 local _ = require('mason-core.functional')
 local utils = require('lsp-setup.utils')
+local inlay_hints = require('lsp-setup.inlay_hints')
 
 local function lsp_servers(opts)
     local servers = {}
@@ -49,6 +50,7 @@ function M.setup(opts)
         default_mappings = true,
         mappings = {},
         servers = {},
+        inlay_hints = inlay_hints.opts,
         capabilities = vim.lsp.protocol.make_client_capabilities(),
         ---@diagnostic disable-next-line: unused-local
         on_attach = function(client, bufnr)
@@ -69,6 +71,7 @@ function M.setup(opts)
         end
     })
 
+    inlay_hints.setup(opts.inlay_hints)
     local servers = lsp_servers(opts)
 
     if vim.api.nvim_get_commands({})['Mason'] == nil then
