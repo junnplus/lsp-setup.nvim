@@ -56,6 +56,152 @@ require('lsp-setup').setup({
 })
 ```
 
+### Inlay hints
+
+Inlay hints are only available in Neovim >= 0.10 or nightly.
+
+```lua
+require('lsp-setup').setup({
+    inlay_hints = {
+        enabled = true,
+    }
+})
+```
+
+<details>
+<summary>typescript-language-server</summary>
+https://github.com/typescript-language-server/typescript-language-server#inlay-hints-textdocumentinlayhint
+
+```lua
+require('lsp-setup').setup({
+    servers = {
+        tsserver = {
+            settings = {
+                typescript = {
+                    inlayHints = {
+                        includeInlayParameterNameHints = 'all',
+                        includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                        includeInlayFunctionParameterTypeHints = true,
+                        includeInlayVariableTypeHints = true,
+                        includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+                        includeInlayPropertyDeclarationTypeHints = true,
+                        includeInlayFunctionLikeReturnTypeHints = true,
+                        includeInlayEnumMemberValueHints = true,
+                    }
+                },
+            }
+        },
+    }
+})
+```
+</details>
+
+<details>
+<summary>gopls</summary>
+https://github.com/golang/tools/blob/master/gopls/doc/inlayHints.md
+
+```lua
+require('lsp-setup').setup({
+    servers = {
+        gopls = {
+            settings = {
+                gopls = {
+                    hints = {
+                        rangeVariableTypes = true,
+                        parameterNames = true,
+                        constantValues = true,
+                        assignVariableTypes = true,
+                        compositeLiteralFields = true,
+                        compositeLiteralTypes = true,
+                        functionTypeParameters = true,
+                    },
+                },
+            },
+        },
+    }
+})
+```
+</details>
+
+<details>
+<summary>rust-analyzer</summary>
+https://github.com/simrat39/rust-tools.nvim/wiki/Server-Configuration-Schema
+
+```lua
+require('lsp-setup').setup({
+    servers = {
+        rust_analyzer = {
+            settings = {
+                ['rust-analyzer'] = {
+                    inlayHints = {
+                        bindingModeHints = {
+                            enable = false,
+                        },
+                        chainingHints = {
+                            enable = true,
+                        },
+                        closingBraceHints = {
+                            enable = true,
+                            minLines = 25,
+                        },
+                        closureReturnTypeHints = {
+                            enable = 'never',
+                        },
+                        lifetimeElisionHints = {
+                            enable = 'never',
+                            useParameterNames = false,
+                        },
+                        maxLength = 25,
+                        parameterHints = {
+                            enable = true,
+                        },
+                        reborrowHints = {
+                            enable = 'never',
+                        },
+                        renderColons = true,
+                        typeHints = {
+                            enable = true,
+                            hideClosureInitialization = false,
+                            hideNamedConstructor = false,
+                        },
+                    }
+                },
+            },
+        },
+    }
+})
+```
+</details>
+
+<details>
+<summary>
+lua-language-server
+</summary>
+https://github.com/LuaLS/lua-language-server/wiki/Settings#hint
+
+```lua
+require('lsp-setup').setup({
+    servers = {
+        lua_ls = {
+            settings = {
+                Lua = {
+                    hint = {
+                        enable = false,
+                        arrayIndex = "Auto",
+                        await = true,
+                        paramName = "All",
+                        paramType = true,
+                        semicolon = "SameLine",
+                        setType = false,
+                    },
+                },
+            },
+        },
+    }
+})
+```
+</details>
+
 ### Setup structure
 
 ```lua
