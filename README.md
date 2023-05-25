@@ -1,12 +1,12 @@
 # lsp-setup.nvim
 
-A simple wrapper for [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) and [mason-lspconfig](https://github.com/williamboman/mason-lspconfig.nvim) to easily setup LSP servers.
+A simple wrapper for [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) and [mason-lspconfig](https://github.com/williamboman/mason-lspconfig.nvim) (optional) to easily setup LSP servers.
 
 ## Installation
 
 - Neovim >= 0.8 (>= 0.10 or nightly for inlay hints)
 - nvim-lspconfig
-- mason.nvim & mason-lspconfig.nvim
+- mason.nvim & mason-lspconfig.nvim (optional)
 
 ### [lazy.nvim](https://github.com/folke/lazy.nvim)
 
@@ -15,8 +15,8 @@ A simple wrapper for [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) 
     'junnplus/lsp-setup.nvim',
     dependencies = {
         'neovim/nvim-lspconfig',
-        'williamboman/mason.nvim',
-        'williamboman/mason-lspconfig.nvim',
+        'williamboman/mason.nvim', -- optional
+        'williamboman/mason-lspconfig.nvim', -- optional
     },
 }
 ```
@@ -28,21 +28,11 @@ use {
     'junnplus/lsp-setup.nvim',
     requires = {
         'neovim/nvim-lspconfig',
-        'williamboman/mason.nvim',
-        'williamboman/mason-lspconfig.nvim',
+        'williamboman/mason.nvim', -- optional
+        'williamboman/mason-lspconfig.nvim', -- optional
     }
 }
 ```
-
-### [vim-plug](https://github.com/junegunn/vim-plug)
-
-```vim
-Plug 'junnplus/lsp-setup.nvim'
-Plug 'neovim/nvim-lspconfig'
-Plug 'williamboman/mason.nvim'
-Plug 'williamboman/mason-lspconfig.nvim'
-```
-
 
 ## Usage
 
@@ -56,7 +46,7 @@ require('lsp-setup').setup({
 
 You can replace `pylsp` with the LSP server name you need, see [available LSPs](https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers).
 
-Also support installing custom versions of LSP servers, for example:
+Also support installing custom versions of LSP servers (requires mason and mason-lspconfig), for example:
 
 ```lua
 require('lsp-setup').setup({
@@ -101,7 +91,7 @@ require('lsp-setup').setup({
     capabilities = vim.lsp.protocol.make_client_capabilities(),
     -- Configuration of LSP servers 
     servers = {
-        -- Install LSP servers automatically
+        -- Install LSP servers automatically (requires mason and mason-lspconfig)
         -- LSP server configuration please see: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
         -- pylsp = {},
         -- rust_analyzer = {
