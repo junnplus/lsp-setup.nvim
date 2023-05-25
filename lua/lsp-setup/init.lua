@@ -12,12 +12,12 @@ local function lsp_servers(opts)
             settings = {},
         })
 
-        local ok, cmp = pcall(require, 'cmp_nvim_lsp')
-        if ok then
+        local ok1, cmp = pcall(require, 'cmp_nvim_lsp')
+        if ok1 then
             config.capabilities = cmp.default_capabilities(config.capabilities)
         end
-        local ok, coq = pcall(require, 'coq')
-        if ok then
+        local ok2, coq = pcall(require, 'coq')
+        if ok2 then
             config = coq.lsp_ensure_capabilities(config)
         end
 
@@ -78,21 +78,30 @@ function M.setup(opts)
     inlay_hints.setup(opts.inlay_hints)
     local servers = lsp_servers(opts)
 
-    if vim.api.nvim_get_commands({})['Mason'] == nil then
-        require('mason').setup()
-    end
-    require('mason-lspconfig').setup({
-        ensure_installed = utils.get_keys(opts.servers),
-    })
-    require('mason-lspconfig').setup_handlers({
-        function(server_name)
-            local config = servers[server_name] or nil
-            if config == nil then
-                return
+    local ok1, mason = pcall(require, 'mason')
+    local ok2, mason_lspconfig = pcall(require, 'mason-lspconfig')
+    if ok1 and ok2 then
+        if vim.api.nvim_get_commands({})['Mason'] == nil then
+            mason.setup()
+        end
+        mason_lspconfig.setup({
+            ensure_installed = utils.get_keys(opts.servers),
+        })
+        mason_lspconfig.setup_handlers({
+            function(server_name)
+                local config = servers[server_name] or nil
+                if config == nil then
+                    return
+                end
+                require('lspconfig')[server_name].setup(config)
             end
+        })
+        return
+    else
+        for server_name, config in pairs(servers) do
             require('lspconfig')[server_name].setup(config)
         end
-    })
+    end
 end
 
 return M
