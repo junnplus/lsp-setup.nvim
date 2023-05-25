@@ -202,6 +202,29 @@ require('lsp-setup').setup({
 ```
 </details>
 
+<details>
+<summary>zls</summary>
+https://github.com/zigtools/zls
+
+```lua
+require('lsp-setup').setup({
+    servers = {
+        zls = {
+            settings = {
+                zls = {
+                    enable_inlay_hints = true,
+                    inlay_hints_show_builtin = true,
+                    inlay_hints_exclude_single_argument = true,
+                    inlay_hints_hide_redundant_param_names = false,
+                    inlay_hints_hide_redundant_param_names_last_token = false,
+                }
+            }
+        },
+    }
+})
+```
+</details>
+
 ### Setup structure
 
 ```lua
