@@ -20,6 +20,16 @@ local function lsp_servers(opts)
         if ok2 then
             config = coq.lsp_ensure_capabilities(config)
         end
+        -- if opts.inlay_hints.enabled == true then
+        --     config.capabilities.textDocument = {
+        --         inlayHint = {
+        --             dynamicRegistration = false,
+        --             resolveSupport = {
+        --                 properties = {},
+        --             },
+        --         },
+        --     }
+        -- end
 
         servers[server_name] = config
     end
