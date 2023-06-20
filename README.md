@@ -279,10 +279,7 @@ require('lsp-setup').setup({
     -- Configuration of LSP inlay hints
     inlay_hints = {
         enabled = false,
-        parameter_hints = true,
-        type_hints = true,
         highlight = 'Comment',
-        priority = 0,
     }
 })
 ```
@@ -344,7 +341,3 @@ require('lsp-setup').setup({
 ## Contributing
 
 Bug reports and feature requests are welcome! PRs are doubly welcome!
-
-## Acknowledgements
-
-The implementation of inlay hints is based on lvimuser's [lsp-inlayhints.nvim](https://github.com/lvimuser/lsp-inlayhints.nvim).
