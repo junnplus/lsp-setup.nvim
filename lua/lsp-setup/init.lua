@@ -6,30 +6,36 @@ local function lsp_servers(opts)
     for server, config in pairs(opts.servers) do
         local server_name, _ = utils.parse_server(server)
 
-        config = vim.tbl_deep_extend('keep', config, {
-            on_attach = opts.on_attach,
-            capabilities = opts.capabilities,
-            settings = {},
-        })
+        if type(config) == 'function' then
+            config = config()
+        end
 
-        local ok1, cmp = pcall(require, 'cmp_nvim_lsp')
-        if ok1 then
-            config.capabilities = cmp.default_capabilities(config.capabilities)
+        if type(config) == 'table' then
+            config = vim.tbl_deep_extend('keep', config, {
+                on_attach = opts.on_attach,
+                capabilities = opts.capabilities,
+                settings = {},
+            })
+
+            local ok1, cmp = pcall(require, 'cmp_nvim_lsp')
+            if ok1 then
+                config.capabilities = cmp.default_capabilities(config.capabilities)
+            end
+            local ok2, coq = pcall(require, 'coq')
+            if ok2 then
+                config = coq.lsp_ensure_capabilities(config)
+            end
+            -- if opts.inlay_hints.enabled == true then
+            --     config.capabilities.textDocument = {
+            --         inlayHint = {
+            --             dynamicRegistration = false,
+            --             resolveSupport = {
+            --                 properties = {},
+            --             },
+            --         },
+            --     }
+            -- end
         end
-        local ok2, coq = pcall(require, 'coq')
-        if ok2 then
-            config = coq.lsp_ensure_capabilities(config)
-        end
-        -- if opts.inlay_hints.enabled == true then
-        --     config.capabilities.textDocument = {
-        --         inlayHint = {
-        --             dynamicRegistration = false,
-        --             resolveSupport = {
-        --                 properties = {},
-        --             },
-        --         },
-        --     }
-        -- end
 
         servers[server_name] = config
     end

@@ -338,25 +338,26 @@ require('lsp-setup').setup({
 ```
 ### [rust-tools.nvim](https://github.com/simrat39/rust-tools.nvim)
 
-Using `require('lsp-setup.rust-tools').setup({})` instead of `require('rust-tools').setup({})`.
-
 ```lua
 require('lsp-setup').setup({
     servers = {
-        rust_analyzer = require('lsp-setup.rust-tools').setup({
-            server = {
-                settings = {
-                    ['rust-analyzer'] = {
-                        cargo = {
-                            loadOutDirsFromCheck = true,
-                        },
-                        procMacro = {
-                            enable = true,
+        rust_analyzer = function()
+            require('rust-tools').setup({
+                server = {
+                    settings = {
+                        ['rust-analyzer'] = {
+                            cargo = {
+                                loadOutDirsFromCheck = true,
+                            },
+                            procMacro = {
+                                enable = true,
+                            },
                         },
                     },
                 },
-            },
-        })
+            })
+            -- no need to return anything
+        end,
     }
 })
 ```
@@ -368,7 +369,9 @@ Using `require('clangd_extensions').prepare({})`.
 ```lua
 require('lsp-setup').setup({
     servers = {
-        clangd = require('clangd_extensions').prepare({})
+        clangd = function()
+            return require('clangd_extensions').prepare({})
+        end,
     }
 })
 ```
