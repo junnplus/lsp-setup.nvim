@@ -97,6 +97,41 @@ require('lsp-setup').setup({
 </details>
 
 <details>
+<summary>vue-language-server</summary>
+
+```lua
+require('lsp-setup').setup({
+    servers = {
+        volar = {
+            settings = {
+                typescript = {
+                    inlayHints = {
+                        enumMemberValues = {
+                            enabled = true,
+                        },
+                        functionLikeReturnTypes = {
+                            enabled = true,
+                        },
+                        propertyDeclarationTypes = {
+                            enabled = true,
+                        },
+                        parameterTypes = {
+                            enabled = true,
+                            suppressWhenArgumentMatchesName = true,
+                        },
+                        variableTypes = {
+                            enabled = true,
+                        },
+                    }
+                },
+            }
+        }
+    }
+})
+```
+</details>
+
+<details>
 <summary>gopls</summary>
 https://github.com/golang/tools/blob/master/gopls/doc/inlayHints.md
 
