@@ -56,6 +56,8 @@ require('lsp-setup').setup({
 })
 ```
 
+LSP servers returns a table will automatically setup server process using lspconfig. You can also pass a nil function to setup the server manually, see [Integrations/rust-tools.nvim](#rust-toolsnvim).
+
 ### Inlay hints
 
 Inlay hints are only available in Neovim >= 0.10 or nightly.
