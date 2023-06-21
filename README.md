@@ -363,12 +363,12 @@ require('lsp-setup').setup({
 
 ### [clangd_extensions.nvim](https://github.com/p00f/clangd_extensions.nvim)
 
-Using `require('lsp-setup.clangd_extensions').setup({})` instead of `require('clangd_extensions').setup({})`.
+Using `require('clangd_extensions').prepare({})`.
 
 ```lua
 require('lsp-setup').setup({
     servers = {
-        clangd = require('lsp-setup.clangd_extensions').setup({})
+        clangd = require('clangd_extensions').prepare({})
     }
 })
 ```
