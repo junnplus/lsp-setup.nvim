@@ -39,6 +39,7 @@ function M.on_attach(client, bufnr)
         vim.notify_once('LSP Inlayhints attached failed: nil client.', vim.log.levels.ERROR)
         return
     end
+
     if not client.server_capabilities.inlayHintProvider then
         return
     end

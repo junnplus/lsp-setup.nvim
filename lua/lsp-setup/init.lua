@@ -43,7 +43,7 @@ local function lsp_servers(opts)
     return servers
 end
 
-local defaults = {
+local default_mappings = {
     gD = vim.lsp.buf.declaration,
     gd = vim.lsp.buf.definition,
     gi = vim.lsp.buf.implementation,
@@ -60,23 +60,29 @@ local defaults = {
 
 local M = {}
 
+--- @class Options
+M.defaults = {
+    default_mappings = true,
+    --- @type table<string, string|function>
+    mappings = {},
+    capabilities = vim.lsp.protocol.make_client_capabilities(),
+    --- @diagnostic disable-next-line: unused-local
+    on_attach = function(client, bufnr)
+        utils.format_on_save(client)
+    end,
+    --- @type table<string, table|function>
+    servers = {},
+    inlay_hints = inlay_hints.opts,
+}
+
+--- @param opts Options
 function M.setup(opts)
     if vim.fn.has('nvim-0.8') ~= 1 then
         vim.notify_once('LSP setup requires Neovim 0.8.0+', vim.log.levels.ERROR)
         return
     end
 
-    opts = vim.tbl_deep_extend('keep', opts, {
-        default_mappings = true,
-        mappings = {},
-        servers = {},
-        inlay_hints = inlay_hints.opts,
-        capabilities = vim.lsp.protocol.make_client_capabilities(),
-        ---@diagnostic disable-next-line: unused-local
-        on_attach = function(client, bufnr)
-            utils.format_on_save(client)
-        end,
-    })
+    opts = vim.tbl_deep_extend('keep', opts, M.defaults)
 
     vim.api.nvim_create_augroup('LspSetup', {})
     vim.api.nvim_create_autocmd('LspAttach', {
@@ -85,7 +91,7 @@ function M.setup(opts)
             local bufnr = args.buf
             local mappings = opts.mappings
             if opts.default_mappings then
-                mappings = vim.tbl_deep_extend('keep', mappings or {}, defaults)
+                mappings = vim.tbl_deep_extend('keep', mappings or {}, default_mappings)
             end
             utils.mappings(bufnr, mappings)
         end
