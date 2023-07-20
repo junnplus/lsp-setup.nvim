@@ -19,7 +19,11 @@ local function lsp_servers(opts)
 
             local ok1, cmp = pcall(require, 'cmp_nvim_lsp')
             if ok1 then
-                config.capabilities = cmp.default_capabilities(config.capabilities)
+                config.capabilities = vim.tbl_deep_extend(
+                    'keep',
+                    cmp.default_capabilities(),
+                    opts.capabilities
+                )
             end
             local ok2, coq = pcall(require, 'coq')
             if ok2 then
