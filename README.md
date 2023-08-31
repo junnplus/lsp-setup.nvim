@@ -39,7 +39,8 @@ use {
 ```lua
 require('lsp-setup').setup({
     servers = {
-        pylsp = {}
+        pylsp = {},
+        clangd = {}
     }
 })
 ```
@@ -359,20 +360,6 @@ require('lsp-setup').setup({
                 },
             })
             -- no need to return anything
-        end,
-    }
-})
-```
-
-### [clangd_extensions.nvim](https://github.com/p00f/clangd_extensions.nvim)
-
-Using `require('clangd_extensions').prepare({})`.
-
-```lua
-require('lsp-setup').setup({
-    servers = {
-        clangd = function()
-            return require('clangd_extensions').prepare({})
         end,
     }
 })
