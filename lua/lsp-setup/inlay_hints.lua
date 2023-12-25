@@ -13,7 +13,7 @@ function M.setup(opts)
     end
 
     if vim.fn.has('nvim-0.10') ~= 1 or vim.lsp.inlay_hint == nil then
-        vim.notify_once('LSP Inlayhints requires Neovim 0.10.0+ (ca5de93)', vim.log.levels.ERROR)
+        vim.notify_once('LSP Inlayhints requires Neovim 0.10.0+ (448907f)', vim.log.levels.ERROR)
         return
     end
 
