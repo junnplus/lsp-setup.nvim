@@ -54,7 +54,7 @@ function M.on_attach(client, bufnr)
         vim.g.zig_fmt_autosave = 0
     end
 
-    vim.lsp.inlay_hint(bufnr)
+    vim.lsp.inlay_hint.enable(bufnr)
 end
 
 return M
