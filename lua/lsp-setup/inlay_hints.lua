@@ -12,7 +12,7 @@ function M.setup(opts)
         return
     end
 
-    if vim.fn.has('nvim-0.10') ~= 1 or vim.lsp.buf.inlay_hint == nil then
+    if vim.fn.has('nvim-0.10') ~= 1 or vim.lsp.inlay_hint == nil then
         vim.notify_once('LSP Inlayhints requires Neovim 0.10.0+ (ca5de93)', vim.log.levels.ERROR)
         return
     end
@@ -54,7 +54,7 @@ function M.on_attach(client, bufnr)
         vim.g.zig_fmt_autosave = 0
     end
 
-    vim.lsp.buf.inlay_hint(bufnr)
+    vim.lsp.inlay_hint(bufnr)
 end
 
 return M
