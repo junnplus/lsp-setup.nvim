@@ -76,6 +76,8 @@ M.defaults = {
     end,
     --- @type table<string, table|function>
     servers = {},
+    --- @type string[]
+    ensure_installed = {},
     inlay_hints = inlay_hints.opts,
 }
 
@@ -86,7 +88,7 @@ function M.setup(opts)
         return
     end
 
-    opts = vim.tbl_deep_extend('keep', opts, M.defaults)
+    opts = vim.tbl_deep_extend('force', M.defaults, opts)
 
     vim.api.nvim_create_augroup('LspSetup', {})
     vim.api.nvim_create_autocmd('LspAttach', {
@@ -98,7 +100,7 @@ function M.setup(opts)
                 mappings = vim.tbl_deep_extend('keep', mappings or {}, default_mappings)
             end
             utils.mappings(bufnr, mappings)
-        end
+        end,
     })
 
     inlay_hints.setup(opts.inlay_hints)
@@ -111,17 +113,20 @@ function M.setup(opts)
             mason.setup()
         end
         mason_lspconfig.setup({
-            ensure_installed = utils.get_keys(opts.servers),
+            ensure_installed = vim.tbl_values(opts.ensure_installed),
         })
         mason_lspconfig.setup_handlers({
             function(server_name)
-                local config = servers[server_name] or nil
+                local config = M.defaults.ensure_installed[server_name] or nil
                 if config == nil then
                     return
                 end
                 require('lspconfig')[server_name].setup(config)
-            end
+            end,
         })
+        for server_name, config in pairs(servers) do
+            require('lspconfig')[server_name].setup(config)
+        end
         return
     else
         for server_name, config in pairs(servers) do
