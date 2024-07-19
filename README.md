@@ -296,9 +296,12 @@ require('lsp-setup').setup({
     end,
     -- Global capabilities
     capabilities = vim.lsp.protocol.make_client_capabilities(),
-    -- Configuration of LSP servers 
+    -- Install LSP servers automatically (requires mason and mason-lspconfig)
+    ensure_installed = {
+        "lua_ls"
+    },
+    -- Configuration of LSP servers
     servers = {
-        -- Install LSP servers automatically (requires mason and mason-lspconfig)
         -- LSP server configuration please see: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
         -- pylsp = {},
         -- rust_analyzer = {
