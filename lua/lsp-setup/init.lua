@@ -55,7 +55,7 @@ local M = {}
 --- @class Options
 M.defaults = {
 	default_mappings = true,
-	--- @type table<string, string|function>
+	--- @type table<string, string|function|table>
 	mappings = {},
 	capabilities = vim.lsp.protocol.make_client_capabilities(),
 	--- @diagnostic disable-next-line: unused-local
