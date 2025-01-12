@@ -62,7 +62,7 @@ M.defaults = {
 	on_attach = function(client, bufnr)
 		utils.format_on_save(client)
 	end,
-	--- @type table<string, table|function>
+	--- @type table<string, table|function|false>
 	servers = {},
 	inlay_hints = inlay_hints.opts,
 }
@@ -103,10 +103,15 @@ function M.setup(opts)
 		})
 		mason_lspconfig.setup_handlers({
 			function(server_name)
-				local config = servers[server_name] or nil
+				local config = servers[server_name]
+
+				if config == false then
+					return
+				end
+
 				local lspconfig = require("lspconfig")
 
-				if config == nil then
+				if config or nil == nil then
 					return lspconfig[server_name].setup(common_lsp_config)
 				end
 
