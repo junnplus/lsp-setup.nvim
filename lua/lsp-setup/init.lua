@@ -60,7 +60,7 @@ M.defaults = {
 	capabilities = vim.lsp.protocol.make_client_capabilities(),
 	--- @diagnostic disable-next-line: unused-local
 	on_attach = function(client, bufnr)
-		utils.format_on_save(client)
+		utils.format_on_save(client, false)
 	end,
 	--- @type table<string, table|function|false>
 	servers = {},
