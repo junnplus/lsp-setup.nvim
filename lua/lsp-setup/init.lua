@@ -58,8 +58,8 @@ local default_mappings = {
     ['<space>ca'] = vim.lsp.buf.code_action,
     ['<space>f'] = vim.lsp.buf.formatting,
     ['<space>e'] = vim.diagnostic.open_float,
-    ['[d'] = vim.diagnostic.goto_prev,
-    [']d'] = vim.diagnostic.goto_next,
+    ['[d'] = function() vim.diagnostic.jump({ count = -1, float = true }) end,
+    [']d'] = function() vim.diagnostic.jump({ count = 1, float = true }) end,
 }
 
 local M = {}
@@ -81,8 +81,8 @@ M.defaults = {
 
 --- @param opts Options
 function M.setup(opts)
-    if vim.fn.has('nvim-0.8') ~= 1 then
-        vim.notify_once('LSP setup requires Neovim 0.8.0+', vim.log.levels.ERROR)
+    if vim.fn.has('nvim-0.11') ~= 1 then
+        vim.notify_once('LSP setup requires Neovim 0.11.0+', vim.log.levels.ERROR)
         return
     end
 
@@ -112,21 +112,13 @@ function M.setup(opts)
         end
         mason_lspconfig.setup({
             ensure_installed = utils.get_keys(opts.servers),
+            automatic_enable = false,
         })
-        mason_lspconfig.setup_handlers({
-            function(server_name)
-                local config = servers[server_name] or nil
-                if config == nil then
-                    return
-                end
-                require('lspconfig')[server_name].setup(config)
-            end
-        })
-        return
-    else
-        for server_name, config in pairs(servers) do
-            require('lspconfig')[server_name].setup(config)
-        end
+    end
+
+    for server_name, config in pairs(servers) do
+        vim.lsp.config(server_name, config)
+        vim.lsp.enable(server_name)
     end
 end
 
