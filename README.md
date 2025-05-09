@@ -2,11 +2,13 @@
 
 A simple wrapper for [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) and [mason-lspconfig](https://github.com/williamboman/mason-lspconfig.nvim) (optional) to easily setup LSP servers.
 
-## Installation
+## Requirements
 
-- Neovim >= 0.8 (>= 0.10 or nightly for inlay hints)
-- nvim-lspconfig
+- Neovim >= 0.11
+- nvim-lspconfig >= 2.0.0
 - mason.nvim & mason-lspconfig.nvim (optional)
+
+## Installation
 
 ### [lazy.nvim](https://github.com/folke/lazy.nvim)
 
@@ -60,8 +62,6 @@ require('lsp-setup').setup({
 LSP servers returns a table will automatically setup server process using lspconfig. You can also pass a nil function to setup the server manually, see [Integrations/rust-tools.nvim](#rust-toolsnvim).
 
 ### Inlay hints
-
-Inlay hints are only available in Neovim >= 0.10 or nightly.
 
 ```lua
 require('lsp-setup').setup({
