@@ -58,8 +58,8 @@ local default_mappings = {
     ['<space>ca'] = vim.lsp.buf.code_action,
     ['<space>f'] = vim.lsp.buf.formatting,
     ['<space>e'] = vim.diagnostic.open_float,
-    ['[d'] = vim.diagnostic.goto_prev,
-    [']d'] = vim.diagnostic.goto_next,
+    ['[d'] = function() vim.diagnostic.jump({ count = -1, float = true }) end,
+    [']d'] = function() vim.diagnostic.jump({ count = 1, float = true }) end,
 }
 
 local M = {}
