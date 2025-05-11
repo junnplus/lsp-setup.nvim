@@ -1,6 +1,8 @@
 local utils = require('lsp-setup.utils')
 local inlay_hints = require('lsp-setup.inlay_hints')
 
+---@param opts LspSetup.Options
+---@return table<string, LspSetup.ServerConfig>
 local function lsp_servers(opts)
   local servers = {}
   for server, config in pairs(opts.servers) do
@@ -64,22 +66,35 @@ local default_mappings = {
 
 local M = {}
 
---- @class Options
+---@class LspSetup.ServerConfig : vim.lsp.ClientConfig
+---@field cmd? string[]|fun(dispatchers: vim.lsp.rpc.Dispatchers): vim.lsp.rpc.PublicClient
+
+---@class LspSetup.Options
+---Enable default key mappings.
+---@field default_mappings? boolean
+---Custom key mappings for LSP.
+---@field mappings? table<string, string|function>
+---Defines the capabilities provided by the client.
+---@field capabilities? lsp.ClientCapabilities
+---Callback invoked when client attaches to a buffer.
+---@field on_attach? fun(client: vim.lsp.Client, bufnr: number)
+---Configurations for LSP servers.
+---@field servers table<string, LspSetup.ServerConfig|function>
+---Configurations for inlay hints.
+---@field inlay_hints? InlayHints.Options
 M.defaults = {
   default_mappings = true,
-  --- @type table<string, string|function>
   mappings = {},
   capabilities = vim.lsp.protocol.make_client_capabilities(),
-  --- @diagnostic disable-next-line: unused-local
-  on_attach = function(client, bufnr)
+  on_attach = function(client, _)
     utils.format_on_save(client)
   end,
-  --- @type table<string, table|function>
   servers = {},
   inlay_hints = inlay_hints.opts,
 }
 
---- @param opts Options
+---@param opts LspSetup.Options
+---@return nil
 function M.setup(opts)
   if vim.fn.has('nvim-0.11') ~= 1 then
     vim.notify_once('LSP setup requires Neovim 0.11.0+', vim.log.levels.ERROR)

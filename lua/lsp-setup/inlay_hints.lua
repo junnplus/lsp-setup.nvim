@@ -1,11 +1,15 @@
 local M = {}
 
+---@class InlayHints.Options
+---@field enabled? boolean Enable inlay hints
+---@field highlight? string Highlight group for inlay hints
 M.opts = {
   enabled = false,
   highlight = 'Comment',
 }
 M.state = setmetatable({}, { __index = nil })
 
+---@param opts InlayHints.Options
 function M.setup(opts)
   M.opts = vim.tbl_deep_extend('keep', opts, M.opts)
   if not opts.enabled then
@@ -34,6 +38,9 @@ function M.setup(opts)
   })
 end
 
+---@param client vim.lsp.Client|nil
+---@param bufnr number
+---@return nil
 function M.on_attach(client, bufnr)
   if not client then
     vim.notify_once('LSP Inlayhints attached failed: nil client.', vim.log.levels.ERROR)

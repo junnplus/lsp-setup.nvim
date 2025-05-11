@@ -10,11 +10,13 @@ function M.mappings(bufnr, mappings)
   end
 end
 
+---@param client vim.lsp.Client
 function M.disable_formatting(client)
   client.server_capabilities.documentFormattingProvider = false
   client.server_capabilities.documentRangeFormattingProvider = false
 end
 
+---@param client vim.lsp.Client
 function M.format_on_save(client)
   if client:supports_method('textDocument/formatting') then
     local lsp_format_augroup = vim.api.nvim_create_augroup('LspFormat', { clear = true })
@@ -27,14 +29,13 @@ function M.format_on_save(client)
   end
 end
 
--- @param server string
--- @return string, string
+---@param server string
 function M.parse_server(server)
   return unpack(vim.split(server, '@'))
 end
 
--- @param t table
--- @return table
+---@param t table
+---@return table
 function M.get_keys(t)
   local keys = {}
   for key, _ in pairs(t) do
