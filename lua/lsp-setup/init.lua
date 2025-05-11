@@ -117,6 +117,10 @@ function M.setup(opts)
   end
 
   for server_name, config in pairs(servers) do
+    local ok, lsp_config = pcall(require, ('mason-lspconfig.lsp.%s'):format(server_name))
+    if ok then
+      config = vim.tbl_deep_extend('keep', config, lsp_config)
+    end
     vim.lsp.config(server_name, config)
     vim.lsp.enable(server_name)
   end
