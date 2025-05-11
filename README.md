@@ -1,6 +1,6 @@
 # lsp-setup.nvim
 
-A simple wrapper for [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) and [mason-lspconfig](https://github.com/williamboman/mason-lspconfig.nvim) (optional) to easily setup LSP servers.
+A simple wrapper for [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) and [mason-lspconfig](https://github.com/mason-org/mason-lspconfig.nvim) (optional) to easily setup LSP servers.
 
 ## Requirements
 
@@ -17,8 +17,8 @@ A simple wrapper for [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) 
   'junnplus/lsp-setup.nvim',
   dependencies = {
     'neovim/nvim-lspconfig',
-    'williamboman/mason.nvim', -- optional
-    'williamboman/mason-lspconfig.nvim', -- optional
+    'mason-org/mason.nvim', -- optional
+    'mason-org/mason-lspconfig.nvim', -- optional
   },
 }
 ```
@@ -30,8 +30,8 @@ use {
   'junnplus/lsp-setup.nvim',
   requires = {
     'neovim/nvim-lspconfig',
-    'williamboman/mason.nvim', -- optional
-    'williamboman/mason-lspconfig.nvim', -- optional
+    'mason-org/mason.nvim', -- optional
+    'mason-org/mason-lspconfig.nvim', -- optional
   }
 }
 ```
@@ -47,7 +47,7 @@ require('lsp-setup').setup({
 })
 ```
 
-You can replace `pylsp` with the LSP server name you need, see [available LSPs](https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers).
+You can replace `pylsp` with the LSP server name you need, see [available LSPs](https://github.com/neovim/nvim-lspconfig/blob/master/doc/configs.md).
 
 Also support installing custom versions of LSP servers (requires mason and mason-lspconfig), for example:
 
@@ -328,17 +328,18 @@ require('lsp-setup').setup({
 
 If installed, will auto advertise capabilities to LSP servers.
 
-### [neodev](https://github.com/folke/neodev.nvim)
+### [lazydev](https://github.com/folke/lazydev.nvim)
 
 ```lua
--- Setup lua_ls with neodev
-require('neodev').setup()
+-- Setup lua_ls with lazydev
+require('lazydev').setup()
 require('lsp-setup').setup({
   servers = {
     lua_ls = {}
   }
 })
 ```
+
 ### [rust-tools.nvim](https://github.com/simrat39/rust-tools.nvim)
 
 ```lua

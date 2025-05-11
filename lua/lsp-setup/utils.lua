@@ -16,7 +16,7 @@ function M.disable_formatting(client)
 end
 
 function M.format_on_save(client)
-  if client.supports_method('textDocument/formatting') then
+  if client:supports_method('textDocument/formatting') then
     local lsp_format_augroup = vim.api.nvim_create_augroup('LspFormat', { clear = true })
     vim.api.nvim_create_autocmd('BufWritePre', {
       group = lsp_format_augroup,
