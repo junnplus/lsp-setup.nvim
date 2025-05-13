@@ -324,7 +324,8 @@ require('lsp-setup').setup({
 
 ## Integrations
 
-### [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp) or [coq_nvim](https://github.com/ms-jpq/coq_nvim)
+### [cmp-nvim-lsp](https://github.com/hrsh7th/cmp-nvim-lsp) or [coq_nvim](https://github.com/ms-jpq/coq_nvim) or
+[blink.cmp](https://github.com/Saghen/blink.cmp)
 
 If installed, will auto advertise capabilities to LSP servers.
 
