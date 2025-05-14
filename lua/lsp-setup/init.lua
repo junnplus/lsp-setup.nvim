@@ -49,19 +49,20 @@ local function lsp_servers(opts)
   return servers
 end
 
+---@type table<string, string|function|{ cmd: string|function, opts: vim.keymap.set.Opts? }>
 local default_mappings = {
-  gD = vim.lsp.buf.declaration,
-  gd = vim.lsp.buf.definition,
-  gi = vim.lsp.buf.implementation,
-  gr = vim.lsp.buf.references,
-  K = vim.lsp.buf.hover,
-  ['<C-k>'] = vim.lsp.buf.signature_help,
-  ['<space>rn'] = vim.lsp.buf.rename,
-  ['<space>ca'] = vim.lsp.buf.code_action,
-  ['<space>f'] = vim.lsp.buf.formatting,
-  ['<space>e'] = vim.diagnostic.open_float,
-  ['[d'] = function() vim.diagnostic.jump({ count = -1, float = true }) end,
-  [']d'] = function() vim.diagnostic.jump({ count = 1, float = true }) end,
+  gD = { cmd = vim.lsp.buf.declaration, opts = { desc = 'Go To Declaration' } },
+  gd = { cmd = vim.lsp.buf.definition, opts = { desc = 'Go To Definition' } },
+  gi = { cmd = vim.lsp.buf.implementation, opts = { desc = 'Go To Implementation' } },
+  gr = { cmd = vim.lsp.buf.references, opts = { desc = 'Go To References' } },
+  K = { cmd = vim.lsp.buf.hover, opts = { desc = 'Hover' } },
+  ['<C-k>'] = { cmd = vim.lsp.buf.signature_help, opts = { desc = 'Show Signature Help' } },
+  ['<space>rn'] = { cmd = vim.lsp.buf.rename, opts = { desc = 'Rename' } },
+  ['<space>ca'] = { cmd = vim.lsp.buf.code_action, opts = { desc = 'Code Action' } },
+  ['<space>f'] = { cmd = vim.lsp.buf.formatting, opts = { desc = 'Format' } },
+  ['<space>e'] = { cmd = vim.diagnostic.open_float, opts = { desc = 'Show Diagnostics' } },
+  ['[d'] = { cmd = function() vim.diagnostic.jump({ count = -1, float = true }) end, opts = { desc = 'Prev Diagnostic' } },
+  [']d'] = { cmd = function() vim.diagnostic.jump({ count = 1, float = true }) end, opts = { desc = 'Next Diagnostic' } },
 }
 
 local M = {}
@@ -73,7 +74,7 @@ local M = {}
 ---Enable default key mappings.
 ---@field default_mappings? boolean
 ---Custom key mappings for LSP.
----@field mappings? table<string, string|function>
+---@field mappings? table<string, string|function|{ cmd: string|function, opts: vim.keymap.set.Opts? }>
 ---Defines the capabilities provided by the client.
 ---@field capabilities? lsp.ClientCapabilities
 ---Callback invoked when client attaches to a buffer.
@@ -108,9 +109,9 @@ function M.setup(opts)
     group = 'LspSetup',
     callback = function(args)
       local bufnr = args.buf
-      local mappings = opts.mappings
+      local mappings = opts.mappings or {}
       if opts.default_mappings then
-        mappings = vim.tbl_deep_extend('keep', mappings or {}, default_mappings)
+        mappings = vim.tbl_deep_extend('keep', mappings, default_mappings)
       end
       utils.mappings(bufnr, mappings)
     end

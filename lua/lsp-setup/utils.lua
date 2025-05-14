@@ -1,8 +1,22 @@
 local M = {}
 
+---@param bufnr number
+---@param mappings table<string, string|function|{ cmd: string|function, opts: vim.keymap.set.Opts? }>
 function M.mappings(bufnr, mappings)
-  local opts = { noremap = true, silent = true, buffer = bufnr }
-  for key, cmd in pairs(mappings or {}) do
+  ---@type vim.keymap.set.Opts
+  local _opts = { noremap = true, silent = true, buffer = bufnr }
+  for key, mapping in pairs(mappings or {}) do
+    ---@type string|function
+    local cmd = nil
+    ---@type vim.keymap.set.Opts
+    local opts = nil
+    if type(mapping) == 'table' then
+      cmd = mapping.cmd
+      opts = vim.tbl_deep_extend('force', _opts, mapping.opts or {})
+    else
+      cmd = mapping
+      opts = _opts
+    end
     if type(cmd) == 'string' and cmd:find('^lua') ~= nil then
       cmd = ':' .. cmd .. '<cr>'
     end
