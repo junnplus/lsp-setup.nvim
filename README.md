@@ -20,18 +20,12 @@ A simple wrapper for [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) 
     'mason-org/mason.nvim', -- optional
     'mason-org/mason-lspconfig.nvim', -- optional
   },
-}
-```
-
-### [packer.nvim](https://github.com/wbthomason/packer.nvim)
-
-```lua
-use {
-  'junnplus/lsp-setup.nvim',
-  requires = {
-    'neovim/nvim-lspconfig',
-    'mason-org/mason.nvim', -- optional
-    'mason-org/mason-lspconfig.nvim', -- optional
+  ---@type LspSetup.Options
+  opts = {
+    servers = {
+      pylsp = {},
+      clangd = {}
+    }
   }
 }
 ```
