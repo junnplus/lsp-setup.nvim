@@ -59,7 +59,7 @@ local default_mappings = {
   ['<C-k>'] = { cmd = vim.lsp.buf.signature_help, opts = { desc = 'Show Signature Help' } },
   ['<space>rn'] = { cmd = vim.lsp.buf.rename, opts = { desc = 'Rename' } },
   ['<space>ca'] = { cmd = vim.lsp.buf.code_action, opts = { desc = 'Code Action' } },
-  ['<space>f'] = { cmd = vim.lsp.buf.formatting, opts = { desc = 'Format' } },
+  ['<space>f'] = { cmd = vim.lsp.buf.format, opts = { desc = 'Format Code' } },
   ['<space>e'] = { cmd = vim.diagnostic.open_float, opts = { desc = 'Show Diagnostics' } },
   ['[d'] = { cmd = function() vim.diagnostic.jump({ count = -1, float = true }) end, opts = { desc = 'Prev Diagnostic' } },
   [']d'] = { cmd = function() vim.diagnostic.jump({ count = 1, float = true }) end, opts = { desc = 'Next Diagnostic' } },
